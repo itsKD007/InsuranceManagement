@@ -1,0 +1,40 @@
+{
+  "devDependencies": {
+    "@types/express": "^4.17.14",
+    "@types/node": "^18.11.8",
+    "@webpack-cli/generators": "^2.5.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.1.0",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.4.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "version": "1.0.0",
+  "description": "An Insurance Management Database as a web app.",
+  "name": "insurance-management",
+  "scripts": {
+    "start": "node ./build/server.js",
+    "build:server": "webpack --config webpack.server.js --mode=production --node-env=production",
+    "build:client": "webpack --config webpack.client.js --mode=production --node-env=production",
+    "build": "npm run build:client && npm run build:server",
+    "serve": "webpack serve --config webpack.client.js"
+  },
+  "dependencies": {
+    "@fontsource/abel": "^4.5.7",
+    "@fontsource/teko": "^4.5.9",
+    "express": "^4.18.2",
+    "iconify-icon": "^1.0.1",
+    "particles.js": "^2.0.0",
+    "purecss": "^3.0.0",
+    "redom": "^3.29.1",
+    "scenejs": "^1.6.0"
+  }
+}

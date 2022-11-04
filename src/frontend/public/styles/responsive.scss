@@ -1,0 +1,27 @@
+@media (min-width: 48em) {
+
+  header {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+
+  div.app {
+    nav {
+      left: 200px;
+    }
+    padding-top: 30px;
+    padding-left: 200px;
+    left: 0;
+  }
+
+  div.view {
+    padding: 0 calc(50% - 300px);
+  }
+
+  div.menu-button {
+    position: fixed;
+    left: 200px;
+    display: none;
+  }
+
+}

@@ -97,8 +97,13 @@ header {
   z-index: 998;
 }
 
+.content {
+  justify-content: center;
+}
+
 .tile-container {
   padding: 5px;
+  flex-basis: 180px;
 }
 
 .tile {

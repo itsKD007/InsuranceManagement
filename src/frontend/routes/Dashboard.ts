@@ -6,7 +6,7 @@ export default class Dashboard extends LoginRequisitePage {
 
   constructor() {
     super("Dashboard", "Manage Your Account")
-    setChildren(this.content, [
+    setChildren(this.contentWhenLoggedIn, [
       el('p', "Congrats, you're a prophet.")
     ]);
   }

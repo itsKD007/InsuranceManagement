@@ -1,4 +1,5 @@
 import { el, mount, setChildren } from 'redom';
+import { textToParagraphs } from '../utils';
 
 import Page from './abstract/Page';
 
@@ -15,7 +16,7 @@ If you liked using or application, or want us to improve anything, please leave 
   constructor() {
     super("Home", "Welcome to KD Insurance!");
 
-    setChildren(this.textElem, this.text.split('\n\n').map(text => el('p', text)));
+    setChildren(this.textElem, textToParagraphs(this.text));
     mount(this, this.textElem);
   }
 

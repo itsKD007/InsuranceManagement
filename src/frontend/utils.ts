@@ -1,3 +1,4 @@
+import { el } from 'redom';
 import Scene from 'scenejs';
 
 export function getClassSelector(element: HTMLElement) {
@@ -5,6 +6,10 @@ export function getClassSelector(element: HTMLElement) {
   const classes = element.className.split(' ').join('.');
   return `${tagName}.${classes}`;
 } 
+
+export function textToParagraphs(text: string) {
+  return text.split('\n\n').map(text => el('p', text))
+}
 
 export async function animateShow(selector: string, duration: number = 0.5) {
   await new Promise(resolve => {

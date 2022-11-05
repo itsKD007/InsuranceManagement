@@ -1,17 +1,24 @@
 export type RouteName = 'home' | 'dashboard' | 'products' | 'services' | 'login' | 'aboutUs' | 'feedback';
 
-type User = {
+export type UserType = 'customer' | 'agent' | 'administrator';
+
+export type User = {
   username: string;
   name: string;
   email: string;
   phone: string;
-  type: 'customer' | 'agent' | 'administrator';
+  type: UserType;
 } | null;
 
 export type AppState = {
   isLoggedIn: boolean;
   user: User;
 };
+
+export type LoginResponse = {
+  success: boolean;
+  user: User;
+}
 
 export const tileIcons = {
   login: {

@@ -6,7 +6,7 @@ export default class Services extends LoginRequisitePage {
 
   constructor() {
     super("Services", "Avail Our Services")
-    setChildren(this.content, [
+    setChildren(this.contentWhenLoggedIn, [
       el('p', "Congrats, you're a prophet.")
     ]);
   }

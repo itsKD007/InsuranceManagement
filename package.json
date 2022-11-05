@@ -36,6 +36,7 @@
     "particles.js": "^2.0.0",
     "purecss": "^3.0.0",
     "redom": "^3.29.1",
-    "scenejs": "^1.6.0"
+    "scenejs": "^1.6.0",
+    "sweetalert2": "^11.6.5"
   }
 }

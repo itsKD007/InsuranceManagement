@@ -11,12 +11,12 @@ import { AppState, RouteName } from './constants';
 
 export default class App implements RedomComponent {
 
-  state: AppState = {
+  private state: AppState = {
     isLoggedIn: false,
     user: null
   };
 
-  elements = {
+  private elements = {
     menuButton: new MenuButton(),
     sideBar: new SideBar(),
     viewRouter: router('main.pure-g', {
@@ -66,8 +66,8 @@ export default class App implements RedomComponent {
   }
 
   constructor() {
-    Object.keys(this.elements.sideBar.links).forEach((key: RouteName) => {
-      this.elements.sideBar.links[key].onClick(async () => {
+    this.elements.sideBar.linkNames.forEach((key: RouteName) => {
+      this.elements.sideBar.linkOnClick(key, async () => {
         this.setView(key);
         unmount(this, this.elements.overlay)
         this.elements.sideBar.hide();

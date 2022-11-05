@@ -7,8 +7,8 @@ import { getClassSelector } from './utils';
 
 
 abstract class ChatBubble implements RedomComponent {
-  textElem = el('div.message-text');
-  bubble = el('div.chat-bubble', this.textElem);
+  protected textElem = el('div.message-text');
+  protected bubble = el('div.chat-bubble', this.textElem);
   el = el('div.chat-bubble-container', this.bubble);
 }
 
@@ -34,33 +34,48 @@ class BotChatBubble extends ChatBubble {
 
 class ChatCompose implements RedomComponent {
 
-  input: HTMLInputElement = el('input.chat-input', {type: 'text', placeholder: "Type a message..."}) as HTMLInputElement;
-  send = el('div.chat-send', new Icon('mdi:send'));
-  el = el('div.chat-compose', this.input, this.send);
+  private inputElem: HTMLInputElement = el('input.chat-input', {
+    type: 'text',
+    placeholder: "Type a message..."
+  }) as HTMLInputElement;
+  private sendElem = el('div.chat-send', new Icon('mdi:send'));
+  el = el('div.chat-compose', this.inputElem, this.sendElem);
 
   onSend(handler: () => void) {
-    this.send.addEventListener('click', _event => {
+    this.sendElem.addEventListener('click', _event => {
       handler();
     });
-    this.input.addEventListener('keydown', event => {
+    this.inputElem.addEventListener('keydown', event => {
       if(event.key == 'Enter')
         handler();
     });
+  }
+
+  get input(): string {
+    return this.inputElem.value;
+  }
+
+  clearInput() {
+    this.inputElem.value = '';
+  }
+
+  focusInput() {
+    this.inputElem.focus();
   }
 
 }
 
 export default class ChatWindow implements RedomComponent {
 
-  closeButton = el('div.chat-close', new Icon('mdi:window-close'))
-  header = el('div.chat-header',
+  private closeButton = el('div.chat-close', new Icon('mdi:window-close'))
+  private header = el('div.chat-header',
     el('div.chat-logo',
       el('div.chat-logo-circle', new Icon('mdi:robot'))),
     el('div.chat-heading', "Chat With Us"),
     this.closeButton
   );
-  body = el('div.chat-body');
-  compose = new ChatCompose();
+  private body = el('div.chat-body');
+  private compose = new ChatCompose();
   el = el('div.chat-window', this.header, this.body, this.compose);
 
   async scrollToBottom() {
@@ -74,8 +89,8 @@ export default class ChatWindow implements RedomComponent {
   constructor() {
     mount(this.body, new BotChatBubble(true));
     this.compose.onSend(async () => {
-      this.addUserMessage(this.compose.input.value);
-      this.compose.input.value = '';
+      this.addUserMessage(this.compose.input);
+      this.compose.clearInput();
       this.scrollToBottom();
       await new Promise(resolve => setTimeout(resolve, 1000));
       this.addBotMessage();
@@ -132,7 +147,7 @@ export default class ChatWindow implements RedomComponent {
   async onmount() {
     await this.animateOpen();
     this.scrollToBottom();
-    this.compose.input.focus();
+    this.compose.focusInput();
   }
 
 }

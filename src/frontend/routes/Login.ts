@@ -1,14 +1,21 @@
-import { el, RedomComponent } from 'redom';
+import { el } from 'redom';
 
-import Icon from '../Icon';
+import Page from './abstract/Page';
+import { AppState } from '../constants';
 
-export default class Login implements RedomComponent {
+export default class Login extends Page {
 
-  header = el('header',
-    el('h1', "Login"),
-    el('h2', "Login To Your Account"),
-    el('hr'));
+  private content = el('div.content');
 
-  el = el('div.view.pure-u-1', this.header);
+  constructor() {
+    super("Login", "Access Your Account");
+  }
+
+  update(appState: AppState) {
+    if(appState.isLoggedIn) {
+      this.heading = "Logout";
+      this.subheading = "Leave Your Account";
+    }
+  }
 
 }

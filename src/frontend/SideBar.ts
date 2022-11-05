@@ -3,7 +3,7 @@ import { el, RedomComponent } from 'redom';
 import { RouteName } from './constants';
 
 class Link implements RedomComponent {
-  a = el('a.pure-menu-link');
+  private a = el('a.pure-menu-link');
   el = el('li.pure-menu-item', this.a);
   constructor(label: string) {
     this.a.textContent = label;
@@ -23,7 +23,7 @@ class Link implements RedomComponent {
 
 export default class SideBar implements RedomComponent {
 
-  links = {
+  private links = {
     home: new Link('Home'),
     dashboard: new Link('Dashboard'),
     products: new Link('Products'),
@@ -33,9 +33,7 @@ export default class SideBar implements RedomComponent {
     feedback: new Link('Feedback')
   };
 
-  selectedLinkName: RouteName = 'home';
-
-  content = el('div.pure-menu.pure-menu-scrollable',
+  private content = el('div.pure-menu.pure-menu-scrollable',
     el('a.pure-menu-heading', 'KDI Pvt. Ltd.'),
     el('ul.pure-menu-list', ...Object.values(this.links)));
 
@@ -46,7 +44,6 @@ export default class SideBar implements RedomComponent {
       link.deselect();
     });
     this.links[linkName].select();
-    this.selectedLinkName = linkName;
   }
 
   show() {
@@ -55,6 +52,16 @@ export default class SideBar implements RedomComponent {
 
   hide() {
     this.el.classList.remove('visible');
+  }
+
+  linkOnClick(linkName: RouteName, handler: () => void) {
+    this.links[linkName].onClick(() => {
+      handler();
+    })
+  }
+
+  get linkNames() {
+    return Object.keys(this.links);
   }
 
 }

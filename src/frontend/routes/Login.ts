@@ -2,7 +2,7 @@ import { el, mount, setChildren } from 'redom';
 
 import Page from './abstract/Page';
 import { AppState, LoginResponse, tileColors, tileIcons } from '../constants';
-import Tile from '../Tile';
+import { Tile } from '../components';
 import { animateHide, animateShow, getClassSelector } from '../utils';
 import Swal from 'sweetalert2';
 

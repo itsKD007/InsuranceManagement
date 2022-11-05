@@ -1,11 +1,6 @@
 import { el, RedomComponent, router, mount, unmount } from 'redom';
-import Scene from 'scenejs';
 
-import MenuButton from './MenuButton';
-import SideBar from './SideBar';
-import Overlay from './Overlay';
-import ChatButton from './ChatButton';
-import ChatWindow from './ChatWindow';
+import * as Component from './components';
 import * as Route from './routes';
 import { AppState, RouteName } from './constants';
 import { animateShow } from './utils';
@@ -18,8 +13,8 @@ export default class App implements RedomComponent {
   };
 
   private elements = {
-    menuButton: new MenuButton(),
-    sideBar: new SideBar(),
+    menuButton: new Component.MenuButton(),
+    sideBar: new Component.SideBar(),
     viewRouter: router('main.pure-g', {
       'home': Route.Home,
       'dashboard': Route.Dashboard,
@@ -29,9 +24,9 @@ export default class App implements RedomComponent {
       'aboutUs': Route.AboutUs,
       'feedback': Route.Feedback
     }),
-    chatButton: new ChatButton(),
-    chatWindow: new ChatWindow(),
-    overlay: new Overlay()
+    chatButton: new Component.ChatButton(),
+    chatWindow: new Component.ChatWindow(),
+    overlay: new Component.Overlay()
   }
 
   el = el('div.app', [

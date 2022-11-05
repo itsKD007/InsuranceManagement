@@ -3,7 +3,7 @@ import Scene from 'scenejs';
 import animateScrollTo from 'animated-scroll-to';
 
 import Icon from './Icon';
-import { getClassSelector } from './utils';
+import { getClassSelector } from '../utils';
 
 
 abstract class ChatBubble implements RedomComponent {

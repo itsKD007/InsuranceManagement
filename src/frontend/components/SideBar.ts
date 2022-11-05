@@ -1,6 +1,6 @@
 import { el, RedomComponent } from 'redom';
 
-import { RouteName } from './constants';
+import { RouteName } from '../constants';
 
 class Link implements RedomComponent {
   private a = el('a.pure-menu-link');

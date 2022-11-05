@@ -1,14 +1,11 @@
-import { el, RedomComponent } from 'redom';
+import { el } from 'redom';
 
-import Icon from '../Icon';
+import Page from './abstract/Page';
 
-export default class Feedback implements RedomComponent {
+export default class Feedback extends Page {
 
-  header = el('header',
-    el('h1', "Feedback"),
-    el('h2', "Share Your Thoughts"),
-    el('hr'));
-
-  el = el('div.view.pure-u-1', this.header);
+  constructor() {
+    super("Feedback", "Share Your Thoughts");
+  }
 
 }

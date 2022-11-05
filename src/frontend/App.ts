@@ -6,7 +6,7 @@ import SideBar from './SideBar';
 import Overlay from './Overlay';
 import ChatButton from './ChatButton';
 import ChatWindow from './ChatWindow';
-import { Home, Dashboard, Products, Services, Login, AboutUs, Feedback } from './routes';
+import * as Route from './routes';
 import { AppState, RouteName } from './constants';
 
 export default class App implements RedomComponent {
@@ -20,13 +20,13 @@ export default class App implements RedomComponent {
     menuButton: new MenuButton(),
     sideBar: new SideBar(),
     viewRouter: router('main.pure-g', {
-      'home': Home,
-      'dashboard': Dashboard,
-      'products': Products,
-      'services': Services,
-      'login': Login,
-      'aboutUs': AboutUs,
-      'feedback': Feedback
+      'home': Route.Home,
+      'dashboard': Route.Dashboard,
+      'products': Route.Products,
+      'services': Route.Services,
+      'login': Route.Login,
+      'aboutUs': Route.AboutUs,
+      'feedback': Route.Feedback
     }),
     chatButton: new ChatButton(),
     chatWindow: new ChatWindow(),

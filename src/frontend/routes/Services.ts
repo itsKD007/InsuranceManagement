@@ -1,4 +1,5 @@
 import { el, setChildren } from 'redom';
+
 import LoginRequisitePage from './abstract/LoginRequisitePage';
 
 export default class Services extends LoginRequisitePage {

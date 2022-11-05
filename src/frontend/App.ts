@@ -8,6 +8,7 @@ import ChatButton from './ChatButton';
 import ChatWindow from './ChatWindow';
 import * as Route from './routes';
 import { AppState, RouteName } from './constants';
+import { animateShow } from './utils';
 
 export default class App implements RedomComponent {
 
@@ -40,25 +41,10 @@ export default class App implements RedomComponent {
     this.elements.chatButton
   ]);
 
-  async animateShowView() {
-    await new Promise(resolve => {
-      new Scene({
-        'div.view': {
-          0: "opacity: 0;",
-          1: "opacity: 1;"
-        }
-      }, {
-          selector: true,
-          duration: 0.5,
-          easing: 'ease'
-      }).playCSS().on('ended', resolve);
-    });
-  }
-
   async setView(pageName: RouteName) {
     this.elements.sideBar.setSelectedLink(pageName);
     this.elements.viewRouter.update(pageName, this.state);
-    await this.animateShowView();
+    await animateShow('div.view');
   }
 
   onmount() {

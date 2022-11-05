@@ -75,6 +75,8 @@ header {
 .app {
   padding-top: 45px;
   background: #ebf1f8;
+  color: #262626;
+  font-size: 16px;
   font-family: sans-serif;
 }
 
@@ -93,4 +95,29 @@ header {
   left: 0;
   background-color: rgba(0, 0, 0, 0.6);
   z-index: 998;
+}
+
+.tile-container {
+  padding: 5px;
+}
+
+.tile {
+  iconify-icon {
+    font-size: 50px;
+    width: 50px;
+    height: 50px;
+  }
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  background-color: #dddddd;
+  height: 100px;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
 }

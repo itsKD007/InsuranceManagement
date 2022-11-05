@@ -1,12 +1,13 @@
-import { el, RedomComponent } from 'redom';
+import { el, setChildren } from 'redom';
+import LoginRequisitePage from './abstract/LoginRequisitePage';
 
-export default class Services implements RedomComponent {
+export default class Services extends LoginRequisitePage {
 
-  header = el('header',
-    el('h1', "Services"),
-    el('h2', "Use Our Services"),
-    el('hr'));
-
-  el = el('div.view.pure-u-1', this.header);
+  constructor() {
+    super("Services", "Avail Our Services")
+    setChildren(this.content, [
+      el('p', "Congrats, you're a prophet.")
+    ]);
+  }
 
 }

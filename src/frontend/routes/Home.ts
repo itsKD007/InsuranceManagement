@@ -1,6 +1,8 @@
-import { el, RedomComponent } from 'redom';
+import { el, mount, setChildren } from 'redom';
 
-export default class Home implements RedomComponent {
+import Page from './abstract/Page';
+
+export default class Home extends Page {
 
   text = `We are happy to have you here. Please use the sidebar to navigate our app. You may need to log in to use certain features. If ever you need help, please do not hesistate to use the chat box.
 
@@ -10,11 +12,11 @@ If you liked using or application, or want us to improve anything, please leave 
 
   textElem = el('div.text');
 
-  header = el('header',
-    el('h1', "Home"),
-    el('h2', "Welcome to KD Insurance!"),
-    el('hr'));
+  constructor() {
+    super("Home", "Welcome to KD Insurance!");
 
-  el = el('div.view.pure-u-1', this.header, this.text.split('\n\n').map(text => el('p', text)));
+    setChildren(this.textElem, this.text.split('\n\n').map(text => el('p', text)));
+    mount(this, this.textElem);
+  }
 
 }

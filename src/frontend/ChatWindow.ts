@@ -1,8 +1,10 @@
 import { el, RedomComponent, mount } from 'redom';
 import Scene from 'scenejs';
+import animateScrollTo from 'animated-scroll-to';
 
 import Icon from './Icon';
 import { getClassSelector } from './utils';
+
 
 abstract class ChatBubble implements RedomComponent {
   textElem = el('div.message-text');
@@ -61,15 +63,23 @@ export default class ChatWindow implements RedomComponent {
   compose = new ChatCompose();
   el = el('div.chat-window', this.header, this.body, this.compose);
 
+  async scrollToBottom() {
+    await new Promise(resolve => {
+      animateScrollTo(this.body.scrollHeight, {
+        elementToScroll: this.body
+      }).then(resolve);
+    });
+  }
+
   constructor() {
     mount(this.body, new BotChatBubble(true));
     this.compose.onSend(async () => {
       this.addUserMessage(this.compose.input.value);
       this.compose.input.value = '';
-      this.body.scrollTop = this.body.scrollHeight;
+      this.scrollToBottom();
       await new Promise(resolve => setTimeout(resolve, 1000));
       this.addBotMessage();
-      this.body.scrollTop = this.body.scrollHeight;
+      this.scrollToBottom();
     });
   }
 
@@ -121,7 +131,7 @@ export default class ChatWindow implements RedomComponent {
 
   async onmount() {
     await this.animateOpen();
-    this.body.scrollTop = this.body.scrollHeight;
+    this.scrollToBottom();
     this.compose.input.focus();
   }
 

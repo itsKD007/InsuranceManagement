@@ -16,7 +16,7 @@ app.post('/api/login', (req: Request, res: Response) => {
       name: 'Kaustav Doari',
       email: 'kd@example.com',
       phone: '9876543210',
-      type: 'customer'
+      type: req.body.type
     }
   });
 });

@@ -10,7 +10,9 @@ export default abstract class Page implements RedomComponent {
     el('hr')
   ]); 
 
-  el = el('div.view.pure-u-1', this.header);
+  protected content = el('div.content.pure-g');
+
+  el = el('div.view.pure-u-1', this.header, this.content);
 
   set heading(text: string) {
     this.headingElem.textContent = text;

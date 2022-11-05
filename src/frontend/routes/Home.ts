@@ -1,4 +1,4 @@
-import { el, mount, setChildren } from 'redom';
+import { el, mount } from 'redom';
 import { textToParagraphs } from '../utils';
 
 import Page from './abstract/Page';
@@ -11,13 +11,12 @@ We hope you have a pleasant experience using our app!
 
 If you liked using or application, or want us to improve anything, please leave us some feedback. We value your thoughts more than anyone!`;
 
-  private textElem = el('div.text');
+  private textElem = el('div.text', textToParagraphs(this.text));
 
   constructor() {
     super("Home", "Welcome to KD Insurance!");
 
-    setChildren(this.textElem, textToParagraphs(this.text));
-    mount(this, this.textElem);
+    mount(this.content, this.textElem);
   }
 
 }

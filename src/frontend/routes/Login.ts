@@ -1,14 +1,13 @@
 import { el, mount, setChildren } from 'redom';
 
 import Page from './abstract/Page';
-import { AppState, LoginResponse, tileColors, tileIcons } from '../constants';
+import { AppState, LoginResponse, tileColors, tileIcons, UserType } from '../constants';
 import { Tile } from '../components';
 import { animateHide, animateShow, getClassSelector } from '../utils';
 import Swal from 'sweetalert2';
 
 export default class Login extends Page {
 
-  private content = el('div.content.pure-g');
   private loginForm = el('form');
   private logoutButton = el('button.pure-button', "Logout");
 
@@ -57,13 +56,14 @@ export default class Login extends Page {
       this.showLogout();
     } else {
       setChildren(this.content, Object.values(this.tiles));
-      Object.values(this.tiles).forEach(tile => {
-        tile.onClick(async () => {
+      Object.keys(this.tiles).forEach((tileName: UserType) => {
+        this.tiles[tileName].onClick(async () => {
           const res = await fetch('/api/login', {
             method: 'post',
             body: JSON.stringify({
               username: "itskd007",
-              password: "12345678"
+              password: "12345678",
+              type: tileName
             }),
             headers: {
               'Content-Type': 'application/json'
@@ -74,6 +74,7 @@ export default class Login extends Page {
             await animateHide(getClassSelector(this.content), 0.2);
             appState.isLoggedIn = true;
             appState.user = data.user;
+            console.log(data.user);
             Swal.fire({
                 title: 'Welcome',
                 text: "Successfully Logged In!",

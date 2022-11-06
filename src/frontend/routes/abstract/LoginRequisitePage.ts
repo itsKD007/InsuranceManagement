@@ -1,7 +1,7 @@
 import { el, mount } from 'redom';
 
 import Page from './Page';
-import { AppState } from '../../constants';
+import { AppState } from '../../App';
 
 export default abstract class LoginRequisitePage extends Page {
 

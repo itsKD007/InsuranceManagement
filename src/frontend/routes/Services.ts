@@ -8,15 +8,18 @@ export default class Services extends Page {
   private tiles = {
     agentLocator: new Tile(
       'mdi:map-marker',
-      "Agent Locator"
+      "Agent Locator",
+      "#ddd4d4"
     ),
     storeLocator: new Tile(
       'mdi:store-marker',
-      "Store Locator"
+      "Store Locator",
+      "#ddd4dd"
     ),
     premiumCalculator: new Tile(
       'mdi:calculator',
-      "Premium Calculator"
+      "Premium Calculator",
+      "#d4ddd4"
     )
   }
 

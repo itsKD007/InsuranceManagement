@@ -1,0 +1,27 @@
+CREATE TABLE customers (
+  _id INTEGER PRIMARY KEY NOT NULL,
+  username VARCHAR NOT NULL,
+  password VARCHAR NOT NULL,
+  name VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  phone VARCHAR NOT NULL
+);
+
+CREATE TABLE agents (
+  _id INTEGER PRIMARY KEY NOT NULL,
+  username VARCHAR NOT NULL,
+  password VARCHAR NOT NULL,
+  name VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  phone VARCHAR NOT NULL,
+  area_code INTEGER NOT NULL
+);
+
+CREATE TABLE administrators (
+  _id INTEGER PRIMARY KEY NOT NULL,
+  username VARCHAR NOT NULL,
+  password VARCHAR NOT NULL,
+  name VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  phone VARCHAR NOT NULL
+);

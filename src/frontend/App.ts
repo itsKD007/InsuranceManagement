@@ -56,8 +56,14 @@ export default class App implements RedomComponent {
       getClassSelector(
         <HTMLElement>this.elements.viewRouter.el
       ), [
-        { opacity: '0' },
-        { opacity: '1' }
+        {
+          opacity: '0',
+          transform: { scale: '0.5', translateY: '50px' }
+        },
+        {
+          opacity: '1',
+          transform: { scale: '1', translateY: '0px' }
+        }
       ]
     );
   }

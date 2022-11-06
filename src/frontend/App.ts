@@ -64,6 +64,7 @@ export default class App implements RedomComponent {
   constructor() {
     this.state.addEventListener('login', () => {
       this.elements.sideBar.changeLinkLabel('login', "Logout");
+      this.setView('dashboard');
     });
     this.elements.sideBar.linkNames.forEach((key: RouteName) => {
       this.elements.sideBar.linkOnClick(key, async () => {

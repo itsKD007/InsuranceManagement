@@ -121,7 +121,7 @@ export default class ChatWindow implements RedomComponent {
             opacity: '0'
           },
           1: {
-            transform: { translateY: '100%' },
+            transform: { translateY: '0%' },
             opacity: '1'
           },
         }

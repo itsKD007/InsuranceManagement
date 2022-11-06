@@ -12,46 +12,46 @@ export default class Dashboard extends LoginRequisitePage {
   private tiles = {
     customer: {
       viewPolicies: new Tile(
-        "mdi:eye",
+        "eye",
         "View Policies",
         "#d7ddd4"
       ),
       manageAccount: new Tile(
-        "mdi:account-cog",
+        "account-cog",
         "Manage Account",
         "#ddd6d4"
       ),
       managePayments: new Tile(
-        "mdi:cash-multiple",
+        "cash-multiple",
         "Manage Payments",
         "#d4ddd7"
       )
     },
     agent: {
       manageAccount: new Tile(
-        "mdi:account-cog",
+        "account-cog",
         "Manage Account",
         "#dddad4"
       ),
       manageCustomers: new Tile(
-        "mdi:account-multiple",
+        "account-multiple",
         "Manage Customers",
         "#d9d4dd"
       ),
     },
     administrator: {
       manageAccount: new Tile(
-        "mdi:account-cog",
+        "account-cog",
         "Manage Account",
         "#d8ddd4"
       ),
       manageAgents: new Tile(
-        "mdi:account-tie",
+        "account-tie",
         "Manage Agents",
         "#ddd9d4"
       ),
       managePolicies: new Tile(
-        "mdi:file-cog",
+        "file-cog",
         "Manage Policies",
         "#d4dddc"
       )

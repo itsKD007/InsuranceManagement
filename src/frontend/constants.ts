@@ -1,6 +1,7 @@
 export type RouteName = 'home' | 'dashboard' | 'products' | 'services' | 'login' | 'aboutUs' | 'feedback';
 
-export type UserType = 'customer' | 'agent' | 'administrator';
+import { UserType } from '../constants';
+export { UserType }
 
 export type User = {
   username: string;
@@ -17,9 +18,9 @@ export type LoginResponse = {
 
 export const tileIcons = {
   login: {
-    customer: "mdi:account",
-    agent: "mdi:account-tie",
-    administrator: "mdi:account-eye"
+    customer: "account",
+    agent: "account-tie",
+    administrator: "account-eye"
   }
 }
 

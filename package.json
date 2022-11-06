@@ -25,19 +25,23 @@
     "build:server": "webpack --config webpack.server.js --mode=production --node-env=production",
     "build:client": "webpack --config webpack.client.js --mode=production --node-env=production",
     "build": "npm run build:client && npm run build:server",
-    "serve": "webpack serve --config webpack.client.js"
+    "serve": "webpack serve --config webpack.client.js",
+    "setup-db:users": "sqlite3 ./databases/users.db '.read ./sql/users.sql'",
+    "setup-db": "npm run setup-db:users"
   },
   "dependencies": {
     "@fontsource/abel": "^4.5.7",
     "@fontsource/roboto-condensed": "^4.5.9",
     "@fontsource/teko": "^4.5.9",
+    "@mdi/font": "^7.0.96",
     "animated-scroll-to": "^2.3.0",
     "express": "^4.18.2",
-    "iconify-icon": "^1.0.1",
+    "knex": "^2.3.0",
     "particles.js": "^2.0.0",
     "purecss": "^3.0.0",
     "redom": "^3.29.1",
     "scenejs": "^1.6.0",
+    "sqlite3": "^5.1.2",
     "sweetalert2": "^11.6.5"
   }
 }

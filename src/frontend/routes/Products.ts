@@ -7,32 +7,32 @@ export default class Products extends Page {
 
   private tiles = {
     home: new Tile(
-      'mdi:home',
+      'home',
       "Home Insurance",
       "#d0d5dd"
     ),
     health: new Tile(
-      'mdi:heart',
+      'heart',
       "Health Insurance",
       "#ddd4d4"
     ),
     life: new Tile(
-      'mdi:heart-pulse',
+      'heart-pulse',
       "Life Insurance",
       "#dbd4dd"
     ),
     travel: new Tile(
-      'mdi:bag-suitcase',
+      'bag-suitcase',
       "Travel Insurance",
       "#d4dddb"
     ),
     twoWheeler: new Tile(
-      'mdi:motorbike',
+      'motorbike',
       "2 Wheeler Insurance",
       "#dcddd4"
     ),
     fourWheeler: new Tile(
-      'mdi:car',
+      'car',
       "4+ Wheeler Insurance",
       "#ddd8d4"
     )

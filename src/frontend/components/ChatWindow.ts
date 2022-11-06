@@ -38,7 +38,7 @@ class ChatCompose implements RedomComponent {
     type: 'text',
     placeholder: "Type a message..."
   }) as HTMLInputElement;
-  private sendElem = el('div.chat-send', new Icon('mdi:send'));
+  private sendElem = el('div.chat-send', new Icon('send'));
   el = el('div.chat-compose', this.inputElem, this.sendElem);
 
   onSend(handler: () => void) {
@@ -67,10 +67,10 @@ class ChatCompose implements RedomComponent {
 
 export default class ChatWindow implements RedomComponent {
 
-  private closeButton = el('div.chat-close', new Icon('mdi:window-close'))
+  private closeButton = el('div.chat-close', new Icon('window-close'))
   private header = el('div.chat-header',
     el('div.chat-logo',
-      el('div.chat-logo-circle', new Icon('mdi:robot'))),
+      el('div.chat-logo-circle', new Icon('robot'))),
     el('div.chat-heading', "Chat With Us"),
     this.closeButton
   );
@@ -116,14 +116,19 @@ export default class ChatWindow implements RedomComponent {
     await new Promise(resolve => {
       new Scene({
         [getClassSelector(this.el)]: {
-          0: 'transform: translateY(100%); opacity: 0;',
-          1: 'transform: translateY(0); opacity: 1;'
+          0: {
+            transform: { translateY: '100%' },
+            opacity: '0'
+          },
+          1: {
+            transform: { translateY: '100%' },
+            opacity: '1'
+          },
         }
       }, {
           selector: true,
           duration: 0.3,
           easing: 'ease',
-          delay: 0
       }).playCSS().on('ended', resolve)
     });
   }
@@ -139,7 +144,6 @@ export default class ChatWindow implements RedomComponent {
           selector: true,
           duration: 0.3,
           easing: 'ease',
-          delay: 0
       }).playCSS().on('ended', resolve)
     });
   }

@@ -1,13 +1,11 @@
-import 'iconify-icon';
-
-import { el, RedomComponent, setAttr } from 'redom';
+import { el, RedomComponent } from 'redom';
 
 export default class Icon implements RedomComponent {
 
-  el = el('iconify-icon');
+  el = el('span.mdi');
 
   constructor(iconName: string) {
-    setAttr(this, { icon: iconName })
+    this.el.classList.add(`mdi-${iconName}`);
   }
 
 }

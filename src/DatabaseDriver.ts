@@ -1,5 +1,5 @@
 import { PathLike } from 'fs';
-import knex from 'knex';
+import knex, { Knex } from 'knex';
 
 interface Customer {
   _id: number;
@@ -11,26 +11,27 @@ interface Customer {
 }
 
 export default class DatabaseDriver {
+
+  knex: Knex;
+
   constructor(dbPath: PathLike) {
-    knex({
+    this.knex = knex({
       client: 'sqlite3',
       connection: {
         filename: dbPath.toString()
       },
       useNullAsDefault: true
     });
-    console.log(dbPath);
   }
 
-  async getCustomers() {
-    return await knex<Customer>('customers')
-      .select('*').from('customers')
-  }
-
-  async getCustomer(username: string) {
-    return await knex<Customer>('customers')
+  getCustomers() {
+    return this.knex<Customer>('customers')
       .select('*')
-      .from('customers')
+  }
+
+  getCustomer(username: string) {
+    return this.knex<Customer>('customers')
+      .select('*')
       .where('username', username)
       .first()
   }

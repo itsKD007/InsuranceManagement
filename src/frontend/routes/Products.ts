@@ -1,7 +1,7 @@
-import { setChildren } from 'redom';
+import { el, setChildren } from 'redom';
 
 import Page from './abstract/Page';
-import Tile from '../components/Tile';
+import Tile, { TilesContainer } from '../components/Tile';
 
 export default class Products extends Page {
 
@@ -38,9 +38,11 @@ export default class Products extends Page {
     )
   };
 
+  private tilesContainer = new TilesContainer(Object.values(this.tiles));
+
   constructor() {
     super("Products", "Our Latest Policies");
-    setChildren(this.content, Object.values(this.tiles));
+    setChildren(this.content, [this.tilesContainer]);
   }
 
 }

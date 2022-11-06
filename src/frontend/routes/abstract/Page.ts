@@ -10,7 +10,7 @@ export default abstract class Page implements RedomComponent {
     el('hr')
   ]); 
 
-  protected content = el('div.content.pure-g');
+  protected content = el('div.content');
 
   el = el('div.view.pure-u-1', this.header, this.content);
 

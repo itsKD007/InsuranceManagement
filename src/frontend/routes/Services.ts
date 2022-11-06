@@ -1,7 +1,7 @@
 import { setChildren } from 'redom';
 
 import Page from './abstract/Page';
-import Tile from '../components/Tile';
+import Tile, { TilesContainer } from '../components/Tile';
 
 export default class Services extends Page {
 
@@ -23,9 +23,11 @@ export default class Services extends Page {
     )
   }
 
+  tilesContainer = new TilesContainer(Object.values(this.tiles))
+
   constructor() {
     super("Services", "Avail Our Services");
-    setChildren(this.content, Object.values(this.tiles));
+    setChildren(this.content, [this.tilesContainer]);
   }
 
 }

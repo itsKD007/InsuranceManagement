@@ -6,7 +6,6 @@ import { AppState } from '../../App';
 export default abstract class LoginRequisitePage extends Page {
 
   private loginWarning = el('p.warning', "You need to log in to use this feature!");
-  protected contentWhenLoggedIn = el('div.content.pure-g');
 
   constructor(heading: string, subheading: string) {
     super(heading, subheading);
@@ -16,7 +15,7 @@ export default abstract class LoginRequisitePage extends Page {
     if(!appState.isLoggedIn)
       mount(this, this.loginWarning);
     else
-      mount(this, this.contentWhenLoggedIn);
+      mount(this, this.content);
   }
 
 }

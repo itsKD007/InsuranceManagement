@@ -3,10 +3,13 @@ import { el, setChildren } from 'redom';
 import LoginRequisitePage from './abstract/LoginRequisitePage';
 import { Tile } from '../components';
 import { AppState } from '../App';
+import { TilesContainer } from '../components/Tile';
 
 export default class Dashboard extends LoginRequisitePage {
 
-private tiles = {
+  private greetingElem = el('div.greeting');
+
+  private tiles = {
     customer: {
       viewPolicies: new Tile(
         "mdi:eye",
@@ -16,7 +19,7 @@ private tiles = {
       manageAccount: new Tile(
         "mdi:account-cog",
         "Manage Account",
-        "#dad4dd"
+        "#ddd6d4"
       ),
       managePayments: new Tile(
         "mdi:cash-multiple",
@@ -24,10 +27,22 @@ private tiles = {
         "#d4ddd7"
       )
     },
+    agent: {
+      manageAccount: new Tile(
+        "mdi:account-cog",
+        "Manage Account",
+        "#dddad4"
+      ),
+      manageCustomers: new Tile(
+        "mdi:account-multiple",
+        "Manage Customers",
+        "#d9d4dd"
+      ),
+    },
     administrator: {
-      accountInfo: new Tile(
-        "mdi:book-information-variant",
-        "Account Information",
+      manageAccount: new Tile(
+        "mdi:account-cog",
+        "Manage Account",
         "#d8ddd4"
       ),
       manageAgents: new Tile(
@@ -43,6 +58,8 @@ private tiles = {
     }
   }
 
+  tilesContainer = new TilesContainer();
+
   constructor() {
     super("Dashboard", "Manage Your Account")
   }
@@ -53,24 +70,26 @@ private tiles = {
       return;
     switch(appState.user.type) {
       case 'customer':
-        setChildren(
-          this.contentWhenLoggedIn,
+        this.tilesContainer.setTiles(
           Object.values(this.tiles.customer)
         );
         break;
       case 'agent':
-        setChildren(
-          this.contentWhenLoggedIn,
-          Object.values(this.tiles.customer)
+        this.tilesContainer.setTiles(
+          Object.values(this.tiles.agent)
         );
         break;
       case 'administrator':
-        setChildren(
-          this.contentWhenLoggedIn,
+        this.tilesContainer.setTiles(
           Object.values(this.tiles.administrator)
         );
         break;
     }
+    this.greetingElem.textContent = `Welcome, ${appState.user.name}`;
+    setChildren(this.content, [
+      this.greetingElem,
+      this.tilesContainer
+    ]);
   }
 
 }

@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Tile } from '../components';
 import { animateHide, animateShow, getClassSelector } from '../utils';
 import { textToParagraphs } from '../utils';
+import { TilesContainer } from '../components/Tile';
 
 export default class Login extends Page {
 
@@ -40,6 +41,8 @@ Have a great rest of your day, and we hope to see you again!`;
     )
   };
 
+  private tilesContainer = new TilesContainer(Object.values(this.tiles));
+
   animateHide() {
     return animateHide(getClassSelector(this.content), 0.2);
   }
@@ -63,7 +66,7 @@ Have a great rest of your day, and we hope to see you again!`;
       this.showLogout();
       return;
     }
-    setChildren(this.content, Object.values(this.tiles));
+    setChildren(this.content, [this.tilesContainer]);
     Object.keys(this.tiles).forEach((tileName: UserType) => {
       this.tiles[tileName].onClick(async () => {
         const res = await fetch('/api/login', {

@@ -2,6 +2,17 @@ import { el, RedomComponent, setChildren } from 'redom';
 
 import Icon from './Icon';
 
+export class TilesContainer implements RedomComponent {
+  el = el('div.tiles-container.pure-g')
+  constructor(tiles?: Tile[]) {
+    if(typeof tiles != 'undefined')
+      this.setTiles(tiles);
+  }
+  setTiles(tiles: Tile[]) {
+    setChildren(this, tiles);
+  }
+}
+
 export default class Tile implements RedomComponent {
 
   private tileElem = el('div.tile');

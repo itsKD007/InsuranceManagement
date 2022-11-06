@@ -1,16 +1,29 @@
-import { el, RedomComponent, router, mount, unmount } from 'redom';
+import { el, RedomComponent, router, mount, unmount, Router } from 'redom';
 
 import * as Component from './components';
 import * as Route from './routes';
-import { AppState, RouteName } from './constants';
-import { animateShow } from './utils';
+import { RouteName, User } from './constants';
+import { animateShow, getClassSelector } from './utils';
+
+export class AppState extends EventTarget {
+
+  isLoggedIn: boolean = false;
+  user: User | null = null;
+
+  addEventListener(type: 'login', callback: () => void) {
+    super.addEventListener(type, callback);
+  }
+
+  dispatchEvent(event: Event): boolean {
+    if(event.type == 'login')
+      return super.dispatchEvent(event);
+  }
+
+}
 
 export default class App implements RedomComponent {
 
-  private state: AppState = {
-    isLoggedIn: false,
-    user: null
-  };
+  private state = new AppState();
 
   private elements = {
     menuButton: new Component.MenuButton(),
@@ -39,7 +52,9 @@ export default class App implements RedomComponent {
   async setView(pageName: RouteName) {
     this.elements.sideBar.setSelectedLink(pageName);
     this.elements.viewRouter.update(pageName, this.state);
-    await animateShow('div.view');
+    await animateShow(getClassSelector(
+      <HTMLElement>this.elements.viewRouter.el
+    ));
   }
 
   onmount() {
@@ -47,6 +62,9 @@ export default class App implements RedomComponent {
   }
 
   constructor() {
+    this.state.addEventListener('login', () => {
+      this.elements.sideBar.changeLinkLabel('login', "Logout");
+    });
     this.elements.sideBar.linkNames.forEach((key: RouteName) => {
       this.elements.sideBar.linkOnClick(key, async () => {
         this.setView(key);

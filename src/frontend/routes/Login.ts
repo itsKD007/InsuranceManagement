@@ -1,15 +1,26 @@
 import { el, mount, setChildren } from 'redom';
 
+import { AppState } from '../App';
 import Page from './abstract/Page';
-import { AppState, LoginResponse, tileColors, tileIcons, UserType } from '../constants';
+import { LoginResponse, tileColors, tileIcons, UserType } from '../constants';
+import Swal from 'sweetalert2';
+
 import { Tile } from '../components';
 import { animateHide, animateShow, getClassSelector } from '../utils';
-import Swal from 'sweetalert2';
+import { textToParagraphs } from '../utils';
 
 export default class Login extends Page {
 
   private loginForm = el('form');
   private logoutButton = el('button.pure-button', "Logout");
+  private text = `Please click the button below to log out of your account.
+
+You may also choose to simply close this browser window, and you'll be logged out automatically. We have chosen not to make user sessions persistent due to security reasons.
+
+Before you leave, you may choose to fill up our feedback form if you want to bring something to our attention, or if you simply enjoyed the experience.
+
+Have a great rest of your day, and we hope to see you again!`;
+  private textElem = el('div.text', textToParagraphs(this.text));
 
   private tiles = {
     customer: new Tile(
@@ -33,10 +44,6 @@ export default class Login extends Page {
     return animateHide(getClassSelector(this.content), 0.2);
   }
 
-  onSubmit(handler: () => void) {
-    handler();
-  }
-
   constructor() {
     super("Login", "Access Your Account");
     mount(this, this.content);
@@ -45,7 +52,7 @@ export default class Login extends Page {
   showLogout() {
     this.heading = "Logout";
     this.subheading = "Leave Your Account";
-    setChildren(this.content, [this.logoutButton]);
+    setChildren(this.content, [this.textElem, this.logoutButton]);
     this.logoutButton.addEventListener('click', () => {
       window.location.reload(); 
     });
@@ -54,42 +61,43 @@ export default class Login extends Page {
   update(appState: AppState) {
     if(appState.isLoggedIn) {
       this.showLogout();
-    } else {
-      setChildren(this.content, Object.values(this.tiles));
-      Object.keys(this.tiles).forEach((tileName: UserType) => {
-        this.tiles[tileName].onClick(async () => {
-          const res = await fetch('/api/login', {
-            method: 'post',
-            body: JSON.stringify({
-              username: "itskd007",
-              password: "12345678",
-              type: tileName
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          const data: LoginResponse = await res.json();
-          if(data.success) {
-            await animateHide(getClassSelector(this.content), 0.2);
-            appState.isLoggedIn = true;
-            appState.user = data.user;
-            console.log(data.user);
-            Swal.fire({
-                title: 'Welcome',
-                text: "Successfully Logged In!",
-                icon: 'success',
-                confirmButtonText: 'OK',
-                confirmButtonColor: '#2592E6',
-                iconColor: '#4ce078',
-                background: '#f6f6f6'
-            });
-            this.showLogout();
-            animateShow(getClassSelector(this.content), 0.2);
+      return;
+    }
+    setChildren(this.content, Object.values(this.tiles));
+    Object.keys(this.tiles).forEach((tileName: UserType) => {
+      this.tiles[tileName].onClick(async () => {
+        const res = await fetch('/api/login', {
+          method: 'post',
+          body: JSON.stringify({
+            username: "itskd007",
+            password: "12345678",
+            type: tileName
+          }),
+          headers: {
+            'Content-Type': 'application/json'
           }
         });
+        const data: LoginResponse = await res.json();
+        if(!data.success) return;
+        await animateHide(getClassSelector(this.content), 0.2);
+        appState.isLoggedIn = true;
+        appState.user = data.user;
+        await new Promise(resolve => { 
+          Swal.fire({
+              title: 'Welcome',
+              text: "Successfully Logged In!",
+              icon: 'success',
+              confirmButtonText: 'OK',
+              confirmButtonColor: '#2592E6',
+              iconColor: '#61cf82',
+              background: '#f6f6f6'
+          }).then(resolve)
+        });
+        this.showLogout();
+        animateShow(getClassSelector(this.content), 0.2);
+        appState.dispatchEvent(new Event('login'));
       });
-    }
+    });
   }
 
 }

@@ -10,11 +10,6 @@ export type User = {
   type: UserType;
 } | null;
 
-export type AppState = {
-  isLoggedIn: boolean;
-  user: User;
-};
-
 export type LoginResponse = {
   success: boolean;
   user: User;

@@ -8,6 +8,9 @@ class Link implements RedomComponent {
   constructor(label: string) {
     this.a.textContent = label;
   }
+  set label(linkLabel: string) {
+    this.a.textContent = linkLabel;
+  }
   onClick(handler: () => void) {
     this.el.addEventListener('click', _event => {
       handler();
@@ -38,6 +41,10 @@ export default class SideBar implements RedomComponent {
     el('ul.pure-menu-list', ...Object.values(this.links)));
 
   el = el('nav.sidebar', this.content);
+  
+  changeLinkLabel(linkName: RouteName, linkLabel: string) {
+    this.links[linkName].label = linkLabel;
+  }
 
   setSelectedLink(linkName: RouteName) {
     Object.values(this.links).forEach(link => {

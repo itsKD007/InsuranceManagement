@@ -1,9 +1,9 @@
-import { el, RedomComponent, router, mount, unmount, Router } from 'redom';
+import { el, RedomComponent, router, mount, unmount } from 'redom';
 
 import * as Component from './components';
 import * as Route from './routes';
 import { RouteName, User } from './constants';
-import { animateShow, getClassSelector } from './utils';
+import { easyAnimate, getClassSelector } from './utils';
 
 export class AppState extends EventTarget {
 
@@ -52,9 +52,14 @@ export default class App implements RedomComponent {
   async setView(pageName: RouteName) {
     this.elements.sideBar.setSelectedLink(pageName);
     this.elements.viewRouter.update(pageName, this.state);
-    await animateShow(getClassSelector(
-      <HTMLElement>this.elements.viewRouter.el
-    ));
+    await easyAnimate(
+      getClassSelector(
+        <HTMLElement>this.elements.viewRouter.el
+      ), [
+        { opacity: '0' },
+        { opacity: '1' }
+      ]
+    );
   }
 
   onmount() {

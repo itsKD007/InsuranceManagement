@@ -6,7 +6,7 @@ import { LoginResponse, tileColors, tileIcons, UserType } from '../constants';
 import Swal from 'sweetalert2';
 
 import { Tile } from '../components';
-import { animateHide, animateShow, getClassSelector } from '../utils';
+import { easyAnimate, getClassSelector } from '../utils';
 import { textToParagraphs } from '../utils';
 import { TilesContainer } from '../components/Tile';
 
@@ -44,7 +44,19 @@ Have a great rest of your day, and we hope to see you again!`;
   private tilesContainer = new TilesContainer(Object.values(this.tiles));
 
   animateHide() {
-    return animateHide(getClassSelector(this.content), 0.2);
+    return easyAnimate(
+      getClassSelector(this.content), [
+        { opacity: 1 }, { opacity: 0 }
+      ], 0.2
+    );
+  }
+
+  animateShow() {
+    return easyAnimate(
+      getClassSelector(this.content), [
+        { opacity: 0 }, { opacity: 1 }
+      ], 0.2
+    );
   }
 
   constructor() {
@@ -82,7 +94,7 @@ Have a great rest of your day, and we hope to see you again!`;
         });
         const data: LoginResponse = await res.json();
         if(!data.success) return;
-        await animateHide(getClassSelector(this.content), 0.2);
+        await this.animateHide();
         appState.isLoggedIn = true;
         appState.user = data.user;
         await new Promise(resolve => { 
@@ -97,7 +109,7 @@ Have a great rest of your day, and we hope to see you again!`;
           }).then(resolve)
         });
         this.showLogout();
-        animateShow(getClassSelector(this.content), 0.2);
+        this.animateShow();
         appState.dispatchEvent(new Event('login'));
       });
     });

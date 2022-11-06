@@ -27,7 +27,7 @@
     "build": "npm run build:client && npm run build:server",
     "serve": "webpack serve --config webpack.client.js",
     "setup-db:users": "sqlite3 ./databases/users.db '.read ./sql/users.sql'",
-    "setup-db": "npm run setup-db:users"
+    "setup-db": "mkdir databases && npm run setup-db:users"
   },
   "dependencies": {
     "@fontsource/abel": "^4.5.7",

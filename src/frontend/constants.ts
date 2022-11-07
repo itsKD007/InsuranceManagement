@@ -13,7 +13,13 @@ export type User = {
 
 export type LoginResponse = {
   success: boolean;
-  user: User;
+  user: User | null;
+  error: string | null;
+}
+
+export const alertIconColors = {
+  success: '#61cf82',
+  error: '#cf6161'
 }
 
 export const tileIcons = {

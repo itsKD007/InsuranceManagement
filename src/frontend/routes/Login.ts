@@ -3,16 +3,24 @@ import { el, mount, setChildren } from 'redom';
 import { AppState } from '../App';
 import Page from './abstract/Page';
 import { LoginResponse, tileColors, tileIcons, UserType } from '../constants';
-import Swal from 'sweetalert2';
 
 import { Tile } from '../components';
-import { easyAnimate, getClassSelector } from '../utils';
+import { easyAlert, easyAnimate, getClassSelector } from '../utils';
 import { textToParagraphs } from '../utils';
 import { TilesContainer } from '../components/Tile';
 
 export default class Login extends Page {
 
-  private loginForm = el('form');
+  private forms = {
+    login: {
+      inputs: {
+      },
+      submitButton: el('button')
+    },
+    register: {
+
+    }
+  }
   private logoutButton = el('button.pure-button', "Logout");
   private text = `Please click the button below to log out of your account.
 
@@ -84,7 +92,7 @@ Have a great rest of your day, and we hope to see you again!`;
         const res = await fetch('/api/login', {
           method: 'post',
           body: JSON.stringify({
-            username: "itskd007",
+            username: "hola",
             password: "12345678",
             type: tileName
           }),
@@ -93,22 +101,17 @@ Have a great rest of your day, and we hope to see you again!`;
           }
         });
         const data: LoginResponse = await res.json();
-        if(!data.success) return;
+        if(!data.success) {
+          if(data.error) {
+            easyAlert('error', "Error", data.error);
+          }
+          return;
+        }
         await this.animateHide();
         appState.isLoggedIn = true;
         appState.user = data.user;
-        await new Promise(resolve => { 
-          Swal.fire({
-              title: 'Welcome',
-              text: "Successfully Logged In!",
-              icon: 'success',
-              confirmButtonText: 'OK',
-              confirmButtonColor: '#2592E6',
-              iconColor: '#61cf82',
-              background: '#f6f6f6'
-          }).then(resolve)
-        });
         this.showLogout();
+        easyAlert('success', "Welcome", `You are now logged in as ${data.user.username}`);
         this.animateShow();
         appState.dispatchEvent(new Event('login'));
       });

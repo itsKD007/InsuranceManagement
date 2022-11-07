@@ -1,5 +1,7 @@
 import { el } from 'redom';
 import Scene from 'scenejs';
+import Swal from 'sweetalert2';
+import { alertIconColors } from './constants';
 
 export function getClassSelector(element: HTMLElement) {
   const tagName = element.tagName.toLocaleLowerCase();
@@ -24,3 +26,17 @@ export function easyAnimate(selector: string, keyframes: [object, object], durat
   });
 }
 
+export function easyAlert(icon: 'success' | 'error', title: string, text: string) {
+    
+  return new Promise(resolve => { 
+    Swal.fire({
+      title,
+      text,
+      icon,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#2592E6',
+      iconColor: alertIconColors[icon],
+      background: '#f6f6f6'
+    }).then(resolve)
+  });
+}

@@ -5,7 +5,8 @@
     "module": "esnext",
     "target": "es2017",
     "moduleResolution": "node",
-    "allowJs": true
+    "allowJs": true,
+    "strictNullChecks": true
   },
   "files": ["src/main.ts"]
 }

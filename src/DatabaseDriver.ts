@@ -1,14 +1,7 @@
 import { PathLike } from 'fs';
 import knex, { Knex } from 'knex';
 
-interface Customer {
-  _id: number;
-  username: string;
-  password: string;
-  name: string;
-  email: string;
-  phone: string;
-}
+import { Customer } from './constants';
 
 export default class DatabaseDriver {
 
@@ -29,10 +22,15 @@ export default class DatabaseDriver {
       .select('*')
   }
 
-  getCustomer(username: string) {
-    return this.knex<Customer>('customers')
+  async getCustomer(username: string): Promise<Customer | null> {
+    const customer = await this.knex<Customer>('customers')
       .select('*')
       .where('username', username)
-      .first()
+      .first();
+
+    if(typeof customer == 'undefined')
+      return null;
+
+    return customer;
   }
 }

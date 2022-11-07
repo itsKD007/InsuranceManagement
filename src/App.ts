@@ -24,7 +24,7 @@ export default class App {
         error: null
       };
       switch(req.body.type) {
-        case 'customer':
+        case UserType.CUSTOMER:
           const customer = await this.database.getCustomer(req.body.username);
           if(customer == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
@@ -42,7 +42,7 @@ export default class App {
             phone: customer.phone,
             type: UserType.CUSTOMER
           }
-          return;
+          break;
         default:
           break;
       }

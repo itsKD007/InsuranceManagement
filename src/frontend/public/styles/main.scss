@@ -8,6 +8,7 @@
 @import "./responsive.scss";
 @import "./chat.scss";
 @import "./tiles.scss";
+@import "./form.scss";
 
 * {
   &::-webkit-scrollbar {
@@ -48,6 +49,11 @@ h1 {
 h2 {
   font-size: 30px;
   font-family: 'Abel';
+}
+
+button.pure-button {
+  display: block;
+  margin: 20px auto;
 }
 
 div.app, nav, header {

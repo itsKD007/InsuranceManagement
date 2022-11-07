@@ -66,7 +66,7 @@ export default class Dashboard extends LoginRequisitePage {
 
   update(appState: AppState) {
     super.update(appState);
-    if(!appState.isLoggedIn)
+    if(!appState.isLoggedIn || appState.user == null)
       return;
     switch(appState.user.type) {
       case 'customer':
@@ -79,7 +79,7 @@ export default class Dashboard extends LoginRequisitePage {
           Object.values(this.tiles.agent)
         );
         break;
-      case 'administrator':
+      case 'admin':
         this.tilesContainer.setTiles(
           Object.values(this.tiles.administrator)
         );

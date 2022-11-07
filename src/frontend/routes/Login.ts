@@ -2,7 +2,7 @@ import { el, mount, setChildren } from 'redom';
 
 import { AppState } from '../App';
 import Page from './abstract/Page';
-import { LoginResponse, tileColors, tileIcons, UserType } from '../constants';
+import { LoginResponseBody, tileColors, tileIcons, UserType } from '../constants';
 
 import { Tile } from '../components';
 import { easyAlert, easyAnimate, getClassSelector } from '../utils';
@@ -42,10 +42,10 @@ Have a great rest of your day, and we hope to see you again!`;
       "Agent",
       tileColors.login.agent
     ),
-    administrator: new Tile(
-      tileIcons.login.administrator,
+    admin: new Tile(
+      tileIcons.login.admin,
       "Administrator",
-      tileColors.login.administrator
+      tileColors.login.admin
     )
   };
 
@@ -100,9 +100,9 @@ Have a great rest of your day, and we hope to see you again!`;
             'Content-Type': 'application/json'
           }
         });
-        const data: LoginResponse = await res.json();
-        if(!data.success) {
-          if(data.error) {
+        const data: LoginResponseBody = await res.json();
+        if(!data.success || data.user == null) {
+          if(data.error != null) {
             easyAlert('error', "Error", data.error);
           }
           return;

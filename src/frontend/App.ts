@@ -17,6 +17,7 @@ export class AppState extends EventTarget {
   dispatchEvent(event: Event): boolean {
     if(event.type == 'login')
       return super.dispatchEvent(event);
+    return false;
   }
 
 }

@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import path from 'path';
 
-import { UserType, PORT, DB_PATH } from './constants';
+import { UserType, PORT, DB_PATH, LoginError } from './constants';
 import DatabaseDriver from './DatabaseDriver';
 
 interface LoginRequest extends Request {
@@ -26,9 +26,18 @@ export default class App {
     this.server.use(express.json());
 
     this.server.post('/api/login', async (req: LoginRequest, res: Response) => {
+      let errorMessage = null;
       switch(req.body.type) {
         case 'customer':
           const customer = await this.database.getCustomer(req.body.username);
+          if(typeof customer == 'undefined') {
+            errorMessage = LoginError.NOT_FOUND;
+            break;
+          }
+          if(customer.password != req.body.password) {
+            errorMessage = LoginError.WRONG_PASSWORD;
+            break;
+          }
           res.send({
             success: true,
             user: {
@@ -37,17 +46,19 @@ export default class App {
               email: customer.email,
               phone: customer.phone,
               type: 'customer'
-            }
+            },
+            error: null
           });
-          break;
+          return;
         default:
-          res.send({
-            success: false,
-            user: null
-          });
           break;
       }
 
+      res.send({
+        success: false,
+        user: null,
+        error: errorMessage
+      });
     });
 
   }

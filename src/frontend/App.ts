@@ -10,12 +10,12 @@ export class AppState extends EventTarget {
   isLoggedIn: boolean = false;
   user: User | null = null;
 
-  addEventListener(type: 'login', callback: () => void) {
+  addEventListener(type: 'login' | 'register', callback: () => void) {
     super.addEventListener(type, callback);
   }
 
   dispatchEvent(event: Event): boolean {
-    if(event.type == 'login')
+    if(['login', 'register'].includes(event.type))
       return super.dispatchEvent(event);
     return false;
   }
@@ -77,6 +77,9 @@ export default class App implements RedomComponent {
     this.state.addEventListener('login', () => {
       this.elements.sideBar.changeLinkLabel('login', "Logout");
       this.setView('dashboard');
+    });
+    this.state.addEventListener('register', () => {
+      this.setView('login');
     });
     this.elements.sideBar.linkNames.forEach((key: RouteName) => {
       this.elements.sideBar.linkOnClick(key, async () => {

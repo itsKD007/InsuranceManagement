@@ -1,13 +1,27 @@
-import { el, mount, RedomComponent, setChildren } from 'redom';
+import { el, mount, RedomComponent, RedomElement, setChildren } from 'redom';
 
 import { AppState } from '../App';
 import Page from './abstract/Page';
-import { LoginResponseBody, tileColors, tileIcons, UserType } from '../constants';
+import { LoginResponseBody, RegisterResponseBody, tileColors, tileIcons, User, UserType } from '../constants';
 
 import { Tile } from '../components';
 import { easyAlert, easyAnimate, getClassSelector } from '../utils';
 import { textToParagraphs } from '../utils';
 import { TilesContainer } from '../components/Tile';
+
+class RegisterLink implements RedomComponent {
+  private a = el(
+    'a.register-link',
+    { href: '#' },
+    "New customer? Register here."
+  );
+  el = el('div.register-link-container', this.a);
+  onClick(handler: () => void) {
+    this.a.addEventListener('click', () => {
+      handler();
+    });
+  }
+}
 
 class LoginForm implements RedomComponent {
 
@@ -16,13 +30,13 @@ class LoginForm implements RedomComponent {
         type: 'text',
         name: 'username',
         required: true,
-        placeholder: "username",
+        placeholder: "Username",
     }) as HTMLInputElement,
     password: el('input.pure-input-1', {
         type: 'password',
         name: 'password',
         required: true,
-        placeholder: "password",
+        placeholder: "Password",
     }) as HTMLInputElement
   };
 
@@ -40,7 +54,7 @@ class LoginForm implements RedomComponent {
     return {
       username: this.inputs.username.value,
       password: this.inputs.password.value
-    }
+    };
   }
 
   onSubmit(handler: () => void) {
@@ -59,39 +73,39 @@ class RegisterForm implements RedomComponent {
         type: 'text',
         name: 'username',
         required: true,
-        placeholder: "username",
-    }),
-    password: el('input.pure-input-1', {
-        type: 'password',
-        name: 'password',
-        required: true,
-        placeholder: "password",
-    }),
-    confirmPassword: el('input.pure-input-1', {
-        type: 'password',
-        name: 'confirm-password',
-        required: true,
-        placeholder: "password",
-    }),
+        placeholder: "Username",
+    }) as HTMLInputElement,
     name: el('input.pure-input-1', {
         type: 'text',
         name: 'name',
         required: true,
         placeholder: "Full Name",
-    }),
+    }) as HTMLInputElement,
     email: el('input.pure-input-1', {
         type: 'email',
         name: 'email',
         required: true,
         placeholder: "customer@example.com",
-    }),
+    }) as HTMLInputElement,
     phone: el('input.pure-input-1', {
         type: 'tel',
         name: 'phone',
         required: true,
         placeholder: "Phone Number",
         pattern: "\\d{10}"
-    }),
+    }) as HTMLInputElement,
+    password: el('input.pure-input-1', {
+        type: 'password',
+        name: 'password',
+        required: true,
+        placeholder: "Password",
+    }) as HTMLInputElement,
+    confirmPassword: el('input.pure-input-1', {
+        type: 'password',
+        name: 'confirm-password',
+        required: true,
+        placeholder: "Password",
+    }) as HTMLInputElement
   };
 
   submitButton = el('button.btn-submit.btn-register.pure-button', "Register");
@@ -100,17 +114,27 @@ class RegisterForm implements RedomComponent {
     el('fieldset',
       el('label', {for: 'username'}, "Username"),
       this.inputs.username,
-      el('label', {for: 'password'}, "Password"),
-      this.inputs.password,
-      el('label', {for: 'confirm-password'}, "Confirm Password"),
-      this.inputs.confirmPassword,
       el('label', {for: 'name'}, "Full Name"),
       this.inputs.name,
       el('label', {for: 'email'}, "Email Address"),
       this.inputs.email,
       el('label', {for: 'phone'}, "Phone Number"),
       this.inputs.phone,
+      el('label', {for: 'password'}, "Password"),
+      this.inputs.password,
+      el('label', {for: 'confirm-password'}, "Confirm Password"),
+      this.inputs.confirmPassword,
       this.submitButton)) as HTMLFormElement;
+
+  get formValues() {
+    return {
+      username: this.inputs.username.value,
+      name: this.inputs.name.value,
+      email: this.inputs.email.value,
+      phone: this.inputs.phone.value,
+      password: this.inputs.password.value
+    };
+  }
 
   onSubmit(handler: () => void) {
     this.submitButton.addEventListener('click', (event: MouseEvent) => {
@@ -156,6 +180,8 @@ Have a great rest of your day, and we hope to see you again!`;
 
   private tilesContainer = new TilesContainer(Object.values(this.tiles));
 
+  private registerLink = new RegisterLink();
+
   animateHide() {
     return easyAnimate(
       getClassSelector(this.content), [
@@ -186,7 +212,114 @@ Have a great rest of your day, and we hope to see you again!`;
     });
   }
 
+  setLoggedIn(appState: AppState, user: User) {
+      appState.isLoggedIn = true;
+      appState.user = user;
+      appState.dispatchEvent(new Event('login'));
+  }
+
   update(appState: AppState) {
+
+    const setupRegisterForm = () => {
+
+      this.forms.register.onSubmit(async () => {
+        const res = await fetch('/api/register', {
+          method: 'post',
+          body: JSON.stringify({
+            ...this.forms.register.formValues
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data: RegisterResponseBody = await res.json();
+
+        if(!data.success || data.user == null) {
+          if(data.error != null)
+            easyAlert('error', "Error", data.error);
+          return;
+        }
+
+        easyAlert(
+          'success',
+          "Welcome",
+          `You have been registered with us. Please login as ${data.user.username} to continue.`
+        );
+
+        appState.dispatchEvent(new Event('register'));
+
+      });
+
+    }
+
+    const setupLoginForm = (userType: UserType) => {
+
+      this.forms.login.onSubmit(async () => {
+        const res = await fetch('/api/login', {
+          method: 'post',
+          body: JSON.stringify({
+            type: userType,
+            ...this.forms.login.formValues
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const data: LoginResponseBody = await res.json();
+
+        if(!data.success || data.user == null) {
+          if(data.error != null)
+            easyAlert('error', "Error", data.error);
+          return;
+        }
+
+        await this.animateHide();
+
+        this.setLoggedIn(appState, data.user);
+
+        easyAlert(
+          'success',
+          "Welcome",
+          `You are now logged in as ${data.user.username}`
+        );
+
+        this.animateShow();
+
+      });
+
+    }
+
+    const setupTile = (userType: UserType) => {
+
+      this.tiles[userType].onClick(async () => {
+
+        await this.animateHide();
+
+        const children: RedomElement[] = [this.forms.login];
+
+        if(userType == UserType.CUSTOMER) {
+          setupRegisterForm();
+          this.registerLink.onClick(async () => {
+            this.heading = "Register";
+            this.subheading = "Become Our Valued Customer";
+            await this.animateHide();
+            setChildren(this.content, [this.forms.register]);
+            await this.animateShow();
+          })
+          children.push(this.registerLink);
+        }
+
+        setChildren(this.content, children);
+
+        setupLoginForm(userType);
+
+        await this.animateShow();
+
+      });
+
+    }
 
     if(appState.isLoggedIn) {
       this.showLogout();
@@ -195,49 +328,8 @@ Have a great rest of your day, and we hope to see you again!`;
 
     setChildren(this.content, [this.tilesContainer]);
 
-    Object.keys(this.tiles).forEach(async (key: UserType) => {
-
-      this.tiles[key].onClick(async () => {
-
-        await this.animateHide();
-
-        setChildren(this.content, [this.forms.login]);
-
-        this.forms.login.onSubmit(async () => {
-
-          const res = await fetch('/api/login', {
-            method: 'post',
-            body: JSON.stringify({
-              type: key,
-              ...this.forms.login.formValues
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-
-          const data: LoginResponseBody = await res.json();
-
-          if(!data.success || data.user == null) {
-            if(data.error != null) {
-              easyAlert('error', "Error", data.error);
-            }
-            return;
-          }
-
-          await this.animateHide();
-          appState.isLoggedIn = true;
-          appState.user = data.user;
-          easyAlert('success', "Welcome", `You are now logged in as ${data.user.username}`);
-          this.animateShow();
-          appState.dispatchEvent(new Event('login'));
-
-        });
-
-        await this.animateShow();
-
-      });
-
+    Object.keys(this.tiles).forEach((key: UserType) => {
+      setupTile(key);
     });
   }
 

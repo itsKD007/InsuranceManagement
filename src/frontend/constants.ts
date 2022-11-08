@@ -31,6 +31,8 @@ export interface LoginResponseBody {
   error: string | null;
 }
 
+export type RegisterResponseBody = LoginResponseBody;
+
 export const alertIconColors = {
   success: '#61cf82',
   error: '#cf6161'

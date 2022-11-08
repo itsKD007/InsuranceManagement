@@ -1,9 +1,17 @@
 import express, { Response } from 'express';
 import path from 'path';
 
-import { PORT, DB_PATH, LoginRequest, LoginErrorMessage, LoginResponseBody, UserType} from './constants';
+import {
+  PORT, DB_PATH,
+  LoginRequest,
+  RegisterRequest,
+  LoginErrorMessage,
+  LoginResponseBody,
+  RegisterResponseBody,
+  UserType
+} from './constants';
 import DatabaseDriver from './DatabaseDriver';
-
+ 
 export default class App {
   private server = express();
   private database = new DatabaseDriver(DB_PATH);
@@ -51,6 +59,25 @@ export default class App {
 
     });
 
+    this.server.post('/api/register', async (req: RegisterRequest, res: Response) => {
+      const responseBody: RegisterResponseBody = {
+        success: false,
+        user: null,
+        error: null
+      };
+      const customer = await this.database.addCustomer(req.body);
+      if(customer != null) {
+        responseBody.success = true;
+        responseBody.user = {
+          name: customer.name,
+          username: customer.username,
+          email: customer.email,
+          phone: customer.phone,
+          type: UserType.CUSTOMER
+        }
+      }
+      res.send(responseBody);
+    });
   }
 
   run() {

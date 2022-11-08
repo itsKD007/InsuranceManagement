@@ -1,7 +1,7 @@
 import { PathLike } from 'fs';
 import knex, { Knex } from 'knex';
 
-import { Customer } from './constants';
+import { Customer, RegisterRequestBody } from './constants';
 
 export default class DatabaseDriver {
 
@@ -15,6 +15,12 @@ export default class DatabaseDriver {
       },
       useNullAsDefault: true
     });
+  }
+
+  async addCustomer(body: RegisterRequestBody) {
+    await this.knex<Customer>('customers')
+      .insert(body);
+    return this.getCustomer(body.username);
   }
 
   getCustomers() {

@@ -1,4 +1,11 @@
-form.form-login, form.form-register {
+.register-link-container {
+  a {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  text-align: center;
+}
+
+.form-login, .form-register {
   fieldset {
     color: rgba(0, 0, 0, 0.65);
     max-width: 300px;

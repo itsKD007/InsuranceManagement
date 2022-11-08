@@ -6,10 +6,18 @@ import {
   User as FrontendUser,
   Customer as FrontendCustomer,
   Agent as FrontendAgent,
-  LoginResponseBody
+  LoginResponseBody,
+  RegisterResponseBody
 } from './frontend/constants';
 
-export { UserType, FrontendUser, FrontendAgent, FrontendCustomer, LoginResponseBody };
+export {
+  UserType,
+  FrontendUser,
+  FrontendAgent,
+  FrontendCustomer,
+  LoginResponseBody,
+  RegisterResponseBody
+};
 
 export interface LoginRequest extends Request {
   body: {
@@ -17,6 +25,18 @@ export interface LoginRequest extends Request {
     password: string;
     type: UserType;
   }
+}
+
+export interface RegisterRequestBody {
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
+export interface RegisterRequest extends Request {
+  body: RegisterRequestBody;
 }
 
 export interface Customer {

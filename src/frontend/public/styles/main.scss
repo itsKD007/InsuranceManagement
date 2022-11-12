@@ -29,8 +29,10 @@
   box-sizing: border-box;
 }
 
-div#swal2-html-container.swal2-html-container {
-  text-align: justify;
+div.product-swal {
+  div#swal2-html-container {
+    text-align: justify;
+  }
 }
 
 hr {

@@ -14,7 +14,8 @@ class ProductWindow {
       html: this.text,
       confirmButtonText: 'OK',
       confirmButtonColor: '#2592E6',
-      background: '#f6f6f6'
+      background: '#f6f6f6',
+      width: '800'
     });
   }
 }

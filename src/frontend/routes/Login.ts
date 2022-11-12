@@ -17,13 +17,17 @@ class RegisterLink implements RedomComponent {
     ""
   );
   el = el('div.register-link-container', this.a);
+  constructor() {
+    this.a.addEventListener('click', () => {
+      this.clickHandler();
+    });
+  }
   set text(text: string) {
     this.a.textContent = text;
   }
+  clickHandler() { }
   onClick(handler: () => void) {
-    this.a.addEventListener('click', () => {
-      handler();
-    });
+    this.clickHandler = handler;
   }
 }
 
@@ -61,11 +65,17 @@ class LoginForm implements RedomComponent {
     };
   }
 
-  onSubmit(handler: () => void) {
+  constructor() {
     this.submitButton.addEventListener('click', (event: MouseEvent) => {
       event.preventDefault();
-      handler();
+      this.submitHandler();
     });
+  }
+
+  submitHandler() {}
+
+  onSubmit(handler: () => void) {
+    this.submitHandler = handler;
   }
 
 }
@@ -157,11 +167,17 @@ class RegisterForm implements RedomComponent {
 
   }
 
-  onSubmit(handler: () => void) {
+  constructor() {
     this.submitButton.addEventListener('click', (event: MouseEvent) => {
       event.preventDefault();
-      handler();
+      this.submitHandler();
     });
+  }
+
+  submitHandler() {}
+
+  onSubmit(handler: () => void) {
+    this.submitHandler = handler;
   }
 
 }

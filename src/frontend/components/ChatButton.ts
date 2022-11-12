@@ -6,10 +6,16 @@ export default class MenuButton implements RedomComponent {
 
   el = el('div.chat-button', new Icon('chat-question-outline'));
 
-  onClick(handler: () => void) {
+  constructor() {
     this.el.addEventListener('click', () => {
-      handler();
+      this.clickHandler();
     });
+  }
+
+  clickHandler() {}
+
+  onClick(handler: () => void) {
+    this.clickHandler = handler;
   }
 
 }

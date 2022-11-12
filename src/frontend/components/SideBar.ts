@@ -7,14 +7,16 @@ class Link implements RedomComponent {
   el = el('li.pure-menu-item', this.a);
   constructor(label: string) {
     this.a.textContent = label;
+    this.el.addEventListener('click', _event => {
+      this.clickHandler();
+    });
   }
   set label(linkLabel: string) {
     this.a.textContent = linkLabel;
   }
+  clickHandler() {}
   onClick(handler: () => void) {
-    this.el.addEventListener('click', _event => {
-      handler();
-    });
+    this.clickHandler = handler;
   }
   select() {
     this.el.classList.add('pure-menu-selected')

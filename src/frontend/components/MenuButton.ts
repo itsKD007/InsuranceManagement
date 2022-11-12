@@ -6,10 +6,16 @@ export default class MenuButton implements RedomComponent {
 
   el = el('div.menu-button', new Icon('menu'));
 
-  onClick(handler: () => void) {
+  clickHandler() {}
+
+  constructor() {
     this.el.addEventListener('click', _event => {
-      handler();
+      this.clickHandler();
     });
+  }
+
+  onClick(handler: () => void) {
+    this.clickHandler = handler;
   }
 
 }

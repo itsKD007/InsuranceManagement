@@ -49,16 +49,19 @@ export default class Tile implements RedomComponent {
 
   constructor(iconName: string, label: string, bgColor: string = "#dddddd") {
     this.tileElem.style.backgroundColor = bgColor
+    this.tileElem.addEventListener('click', _event => {
+      this.clickHandler();
+    });
     setChildren(this.tileElem, [
       new Icon(iconName),
       el('div.tile-label', label),
     ]);
   }
 
+  clickHandler() {}
+
   onClick(handler: () => void) {
-    this.tileElem.addEventListener('click', _event => {
-      handler()
-    });
+    this.clickHandler = handler;
   }
 
 }

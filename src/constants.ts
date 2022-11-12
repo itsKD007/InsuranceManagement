@@ -33,6 +33,7 @@ export interface RegisterRequestBody {
   email: string;
   phone: string;
   password: string;
+  type: UserType.CUSTOMER | UserType.AGENT;
 }
 
 export interface RegisterRequest extends Request {
@@ -49,7 +50,7 @@ export interface Customer {
 }
 
 export interface Agent {
-  adminId: number;
+  agentId: number;
   username: string;
   password: string;
   name: string;
@@ -73,4 +74,8 @@ export const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../databases
 export enum LoginErrorMessage {
   NOT_FOUND = "We could not find your user. Are you registered?",
   WRONG_PASSWORD = "The password you entered appears to be incorrect. Please try again."
+}
+
+export enum RegisterErrorMessage {
+  ALREADY_EXISTS = "This username already exists in our database. Please choose another username!",
 }

@@ -8,6 +8,7 @@ import {
   LoginErrorMessage,
   LoginResponseBody,
   RegisterResponseBody,
+  RegisterErrorMessage,
   UserType
 } from './constants';
 import DatabaseDriver from './DatabaseDriver';
@@ -51,6 +52,44 @@ export default class App {
             type: UserType.CUSTOMER
           }
           break;
+        case UserType.AGENT:
+          const agent = await this.database.getCustomer(req.body.username);
+          if(agent == null) {
+            responseBody.error = LoginErrorMessage.NOT_FOUND;
+            break;
+          }
+          if(agent.password != req.body.password) {
+            responseBody.error = LoginErrorMessage.WRONG_PASSWORD;
+            break;
+          }
+          responseBody.success = true;
+          responseBody.user = {
+            name: agent.name,
+            username: agent.username,
+            email: agent.email,
+            phone: agent.phone,
+            type: UserType.AGENT
+          }
+          break;
+        case UserType.ADMIN:
+          const admin = await this.database.getCustomer(req.body.username);
+          if(admin == null) {
+            responseBody.error = LoginErrorMessage.NOT_FOUND;
+            break;
+          }
+          if(admin.password != req.body.password) {
+            responseBody.error = LoginErrorMessage.WRONG_PASSWORD;
+            break;
+          }
+          responseBody.success = true;
+          responseBody.user = {
+            name: admin.name,
+            username: admin.username,
+            email: admin.email,
+            phone: admin.phone,
+            type: UserType.ADMIN
+          }
+          break;
         default:
           break;
       }
@@ -65,16 +104,40 @@ export default class App {
         user: null,
         error: null
       };
-      const customer = await this.database.addCustomer(req.body);
-      if(customer != null) {
-        responseBody.success = true;
-        responseBody.user = {
-          name: customer.name,
-          username: customer.username,
-          email: customer.email,
-          phone: customer.phone,
-          type: UserType.CUSTOMER
-        }
+
+      switch(req.body.type) {
+        case UserType.CUSTOMER:
+          const customer = await this.database.addCustomer(req.body);
+          if(customer == null) {
+            responseBody.error = RegisterErrorMessage.ALREADY_EXISTS;
+          } else {
+            responseBody.success = true;
+            responseBody.user = {
+              name: customer.name,
+              username: customer.username,
+              email: customer.email,
+              phone: customer.phone,
+              type: UserType.CUSTOMER
+            }
+          }
+          break;
+        case UserType.AGENT:
+          const agent = await this.database.addAgent(req.body);
+          if(agent == null) {
+            responseBody.error = RegisterErrorMessage.ALREADY_EXISTS;
+          } else {
+            responseBody.success = true;
+            responseBody.user = {
+              name: agent.name,
+              username: agent.username,
+              email: agent.email,
+              phone: agent.phone,
+              type: UserType.AGENT
+            }
+          }
+          break;
+        default:
+          break;
       }
       res.send(responseBody);
     });

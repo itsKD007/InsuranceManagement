@@ -1,4 +1,5 @@
 import { el, mount, RedomComponent, RedomElement, setChildren } from 'redom';
+import { startCase } from 'lodash';
 
 import { AppState } from '../App';
 import Page from './abstract/Page';
@@ -13,9 +14,12 @@ class RegisterLink implements RedomComponent {
   private a = el(
     'a.register-link',
     { href: '#' },
-    "New customer? Register here."
+    ""
   );
   el = el('div.register-link-container', this.a);
+  set text(text: string) {
+    this.a.textContent = text;
+  }
   onClick(handler: () => void) {
     this.a.addEventListener('click', () => {
       handler();
@@ -136,6 +140,23 @@ class RegisterForm implements RedomComponent {
     };
   }
 
+  validate() {
+    const passwordsMatch = (
+      this.inputs.password.value ==
+        this.inputs.confirmPassword.value
+    );
+    const inputsValid = Object.values(this.inputs)
+      .every(input => input.validity.valid);
+    
+    if(!passwordsMatch)
+      easyAlert('error', "Error", "Passwords do not match.");
+    else if(!inputsValid)
+      easyAlert('error', "Error", "Some of the fields have invalid input.");
+
+    return passwordsMatch && inputsValid;
+
+  }
+
   onSubmit(handler: () => void) {
     this.submitButton.addEventListener('click', (event: MouseEvent) => {
       event.preventDefault();
@@ -220,12 +241,17 @@ Have a great rest of your day, and we hope to see you again!`;
 
   update(appState: AppState) {
 
-    const setupRegisterForm = () => {
+    const setupRegisterForm = (userType: UserType) => {
 
       this.forms.register.onSubmit(async () => {
+
+        if(!this.forms.register.validate())
+          return;
+
         const res = await fetch('/api/register', {
           method: 'post',
           body: JSON.stringify({
+            type: userType,
             ...this.forms.register.formValues
           }),
           headers: {
@@ -299,11 +325,16 @@ Have a great rest of your day, and we hope to see you again!`;
 
         const children: RedomElement[] = [this.forms.login];
 
-        if(userType == UserType.CUSTOMER) {
-          setupRegisterForm();
+        if([UserType.CUSTOMER, UserType.AGENT].includes(userType)) {
+          setupRegisterForm(userType);
+          this.registerLink.text = ({
+            [UserType.CUSTOMER]: "New User? Register Here.",
+            [UserType.AGENT]: "Want to work with us? Register Here.",
+            [UserType.ADMIN]: "Found a bug? Report to us."
+          }[userType]);
           this.registerLink.onClick(async () => {
             this.heading = "Register";
-            this.subheading = "Become Our Valued Customer";
+            this.subheading = `Become Our Valued ${startCase(userType.toString())}`;
             await this.animateHide();
             setChildren(this.content, [this.forms.register]);
             await this.animateShow();
@@ -327,6 +358,9 @@ Have a great rest of your day, and we hope to see you again!`;
     }
 
     setChildren(this.content, [this.tilesContainer]);
+
+    this.heading = "Login";
+    this.subheading = "Access Your Account";
 
     Object.keys(this.tiles).forEach((key: UserType) => {
       setupTile(key);

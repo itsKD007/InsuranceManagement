@@ -53,7 +53,7 @@ export default class App {
           }
           break;
         case UserType.AGENT:
-          const agent = await this.database.getCustomer(req.body.username);
+          const agent = await this.database.getAgent(req.body.username);
           if(agent == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
             break;

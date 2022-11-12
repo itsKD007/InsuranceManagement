@@ -3,6 +3,10 @@ import { el, setChildren } from 'redom';
 import Page from './abstract/Page';
 import Tile, { TilesContainer } from '../components/Tile';
 
+class ProductWindow {
+
+}
+
 export default class Products extends Page {
 
   private tiles = {

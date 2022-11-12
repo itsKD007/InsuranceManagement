@@ -33,6 +33,8 @@ export interface LoginResponseBody {
 
 export type RegisterResponseBody = LoginResponseBody;
 
+export type ProductName = 'home' | 'health' | 'life' | 'travel' | 'twoWheeler' | 'fourWheeler';
+
 export const alertIconColors = {
   success: '#61cf82',
   error: '#cf6161'
@@ -51,5 +53,94 @@ export const tileColors = {
     customer: "#d4ddd4",
     agent: "#dddbd4",
     admin: "#ddd4d4"
+  }
+}
+
+export const productDetails = {
+  home: {
+    title: 'Home Insurance',
+    text: `This policy covers interior damage, exterior damage, loss or damage of personal assets, and injury that arises while on the property.
+
+This covers losses caused by:
+1. Fire
+2. Aircraft damage
+3. Lightning and rain
+4. Riots
+5. Storms, cyclones, floods, hurricanes
+6. Missile testing
+7. Earthquake
+
+Validity: 5 years
+Monthly premium to be paid: Rs. 1000`,
+  },
+  health: {
+    title: 'Health Insurance',
+    text: `A health insurance policy extends coverage against medical expenses incurred owing to accidents, illness or injury.
+This covers:
+1. Hospitalisation Expenses
+2. Pre and Post Hospitalisation Charges
+3. No Cap on ICU Room Charges
+4. Cover Against Mental Illness
+5. Bariatric Surgery Costs
+6. No Room Rent Capping
+7. Road Ambulance Charges
+8. Organ Donation Charges
+9. Domiciliary Care
+
+Validity: 10 years
+Monthly premium to be paid: Rs. 1500`,
+  },
+  life: {
+    title: 'Life Insurance',
+    text: `Life insurance is a contract between an insurer and a policy owner. A life insurance policy guarantees the insurer pays a sum of money to named beneficiaries when the insured dies in exchange for the premiums paid by the policyholder during their lifetime.
+
+The life insurance application must accurately disclose the insured’s past and current health conditions and high-risk activities to enforce the contract.
+
+Validity: 5 years
+Monthly premium to be paid: Rs. 1500`
+  },
+  travel: {
+    title: 'Travel Insurance',
+    text: `Planning travel, whether it be for business or pleasure, takes time and energy, not to mention money. The last thing anyone wants is to miss out on a well-deserved vacation because of circumstances outside of their control, such as weather, illness, or baggage loss.
+Travel insurance covers a pre-planned trip and will reimburse the policyholder if certain unforeseen circumstances occur. You can think of travel insurance as a way to protect your investment in a trip before and during travel.
+
+This covers losses caused by:
+1. Trip Cancellation / Interruption
+2. Travel Medical
+3. Medical Evacuation
+4. Baggage Delay / Loss
+5. Accidental Death & Dismemberment
+
+Validity: 6 months
+Premium to be paid: 10% of the cost of the travel`
+  },
+  twoWheeler: {
+    title: '2 Wheeler Insurance',
+    text: `Bike insurance, technically called a two-wheeler insurance, is an ideal tool to safeguard yourself against the financial losses which may arise due to an unfortunate event like a road accident involving the two-wheeler. According to the Indian Motor Tariff, 2002 it is mandatory for every bike owner to have at least a third party bike insurance cover.
+This covers losses caused by:
+1. Road Accident
+2. Natural Calamities - Floods, Earthquakes, Cyclones, etc.
+3. Fire/Explosion
+4. Riots, Strikes
+5. Terrorist Activities
+6. Damage During Travel By Air, Rail, Road, Water.
+
+Validity: 2 years
+Monthly premium to be paid: Rs. 1000`
+  },
+  fourWheeler: {
+    title: '4+ Wheeler Insurance',
+    text: `Car insurance policy is bought to protect your car or vehicle, from unexpected or accidental risks. It mainly gives you protection against the losses that you incur in case of unavoidable instances. It helps you get cover against financial losses caused by accidents, liabilities & in some cases, even losses caused by theft. The premium of car insurance depends on certain factors like; the value of your car, type of coverage, voluntary excess & vehicle classification. Car insurance coverage gives you the confidence to drive without worries. In case of emergencies, it acts as a life-saving toolkit for the insurance holder.
+In order to get these benefits continuously, car insurance policy renewal should be done in a timely manner.
+This covers losses caused by:
+1. Road Accident
+2. Fire/Explosion damage
+3. Riots, Strikes
+4. Natural Calamities - Floods, Earthquakes, Cyclones, etc.
+5. Terrorist Activities
+6. Damage During Travel By Air, Rail, Road, Water.
+
+Validity: 2 years
+Monthly premium to be paid: Rs 2000`
   }
 }

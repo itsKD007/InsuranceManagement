@@ -1,10 +1,22 @@
 import { el, setChildren } from 'redom';
+import Swal from 'sweetalert2';
 
 import Page from './abstract/Page';
 import Tile, { TilesContainer } from '../components/Tile';
+import { productDetails, ProductName } from '../constants';
 
 class ProductWindow {
-
+  title: string;
+  text: string;
+  show() {
+    Swal.fire({
+      title: this.title,
+      html: this.text,
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#2592E6',
+      background: '#f6f6f6'
+    });
+  }
 }
 
 export default class Products extends Page {
@@ -42,11 +54,20 @@ export default class Products extends Page {
     )
   };
 
+  private productWindow = new ProductWindow();
+
   private tilesContainer = new TilesContainer(Object.values(this.tiles));
 
   constructor() {
     super("Products", "Our Latest Policies");
     setChildren(this.content, [this.tilesContainer]);
+    Object.keys(this.tiles).forEach((tileName: ProductName) => {
+      this.tiles[tileName].onClick(() => {
+        this.productWindow.title = productDetails[tileName].title;
+        this.productWindow.text = productDetails[tileName].text.split('\n').join('<br>');
+        this.productWindow.show();
+      });
+    });
   }
 
 }

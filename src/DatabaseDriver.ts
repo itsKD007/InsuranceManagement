@@ -1,7 +1,7 @@
 import { PathLike } from 'fs';
 import knex, { Knex } from 'knex';
 
-import { Customer, Agent, RegisterRequestBody } from './constants';
+import { Customer, Agent, RegisterRequestBody, Admin } from './constants';
 
 export default class DatabaseDriver {
 
@@ -78,6 +78,18 @@ export default class DatabaseDriver {
   getAgents(): Promise<Agent[]> {
     return this.knex<Agent>('agents')
       .select('*');
+  }
+
+  async getAdmin(username: string): Promise<Admin | null> {
+    const admin = await this.knex<Admin>('admins')
+      .select('*')
+      .where('username', username)
+      .first();
+
+    if(typeof admin == 'undefined')
+      return null;
+
+    return admin;
   }
 
 }

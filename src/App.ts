@@ -72,7 +72,7 @@ export default class App {
           }
           break;
         case UserType.ADMIN:
-          const admin = await this.database.getCustomer(req.body.username);
+          const admin = await this.database.getAdmin(req.body.username);
           if(admin == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
             break;

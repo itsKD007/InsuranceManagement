@@ -1,4 +1,4 @@
-import express, { Response } from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 
 import {
@@ -11,11 +11,11 @@ import {
   RegisterErrorMessage,
   UserType
 } from './constants';
-import DatabaseDriver from './DatabaseDriver';
+import UserDatabaseDriver from './UserDatabaseDriver';
  
 export default class App {
   private server = express();
-  private database = new DatabaseDriver(DB_PATH);
+  private usersDb = new UserDatabaseDriver(DB_PATH);
 
   constructor() {
     this.setupHandlers();
@@ -34,7 +34,7 @@ export default class App {
       };
       switch(req.body.type) {
         case UserType.CUSTOMER:
-          const customer = await this.database.getCustomer(req.body.username);
+          const customer = await this.usersDb.getCustomer(req.body.username);
           if(customer == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
             break;
@@ -53,7 +53,7 @@ export default class App {
           }
           break;
         case UserType.AGENT:
-          const agent = await this.database.getAgent(req.body.username);
+          const agent = await this.usersDb.getAgent(req.body.username);
           if(agent == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
             break;
@@ -72,7 +72,7 @@ export default class App {
           }
           break;
         case UserType.ADMIN:
-          const admin = await this.database.getAdmin(req.body.username);
+          const admin = await this.usersDb.getAdmin(req.body.username);
           if(admin == null) {
             responseBody.error = LoginErrorMessage.NOT_FOUND;
             break;
@@ -107,7 +107,7 @@ export default class App {
 
       switch(req.body.type) {
         case UserType.CUSTOMER:
-          const customer = await this.database.addCustomer(req.body);
+          const customer = await this.usersDb.addCustomer(req.body);
           if(customer == null) {
             responseBody.error = RegisterErrorMessage.ALREADY_EXISTS;
           } else {
@@ -122,7 +122,7 @@ export default class App {
           }
           break;
         case UserType.AGENT:
-          const agent = await this.database.addAgent(req.body);
+          const agent = await this.usersDb.addAgent(req.body);
           if(agent == null) {
             responseBody.error = RegisterErrorMessage.ALREADY_EXISTS;
           } else {
@@ -140,7 +140,34 @@ export default class App {
           break;
       }
       res.send(responseBody);
+
     });
+
+    this.server.get('/api/customers', async (_req: Request, res: Response) => {
+      const customers = await this.usersDb.getCustomers();
+      res.send(customers.map(customer => ({
+        customerId: customer.customerId,
+        username: customer.username,
+        name: customer.name,
+        email: customer.email,
+        phone: customer.phone,
+        type: UserType.CUSTOMER
+      })));
+    });
+
+    this.server.get('/api/agents', async (_req: Request, res: Response) => {
+      const agents = await this.usersDb.getAgents();
+      res.send(agents.map(agent => ({
+        customerId: agent.agentId,
+        username: agent.username,
+        name: agent.name,
+        email: agent.email,
+        phone: agent.phone,
+        areaCode: agent.areaCode,
+        type: UserType.AGENT
+      })));
+    });
+
   }
 
   run() {

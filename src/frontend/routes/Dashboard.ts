@@ -12,7 +12,6 @@ import {
   CustomerDashboardTileName,
   DeleteResponseBody,
   UserType,
-  Policy,
   productTitles,
   ProductName
 } from '../constants';
@@ -42,7 +41,7 @@ class PolicyViewer {
   }
 }
 
-class ManagementActions {
+class UserManagementActions {
   private editButton = el('a.user-edit', new Icon('account-edit'));
   private deleteButton = el('a.user-delete', new Icon('account-cancel'));
   
@@ -50,19 +49,19 @@ class ManagementActions {
 
   constructor() {
     this.editButton.addEventListener('click', () => {
-      this.editHandler();
+      this.editClickHandler();
     });
     this.deleteButton.addEventListener('click', async () => {
-      this.deleteHandler();
+      this.deleteClickHandler();
     });
   }
-  private editHandler() {}
-  onEdit(handler: () => void) {
-    this.editHandler = handler;
+  private editClickHandler() {}
+  onEditClick(handler: () => void) {
+    this.editClickHandler = handler;
   }
-  private deleteHandler() {}
-  onDelete(handler: () => void) {
-    this.deleteHandler = handler;
+  private deleteClickHandler() {}
+  onDeleteClick(handler: () => void) {
+    this.deleteClickHandler = handler;
   }
 }
 
@@ -83,11 +82,11 @@ class CustomerManagement implements RedomComponent {
     const customers: Customer[] = await res.json();
     setChildren(this.tbody, []);
     customers.forEach(customer => {
-      const managementActions = new ManagementActions();
-      managementActions.onEdit(async () => {
+      const managementActions = new UserManagementActions();
+      managementActions.onEditClick(async () => {
         
       });
-      managementActions.onDelete(async () => {
+      managementActions.onDeleteClick(async () => {
         const res = await fetch('/api/delete', {
           method: 'post',
           body: JSON.stringify({
@@ -125,9 +124,9 @@ class CustomerManagement implements RedomComponent {
     this.updateHandler = handler;
   }
 
-  private editingHandler() {}
-  async onEditing(handler: () => void) {
-    this.editingHandler = handler;
+  private editSubmitHandler() {}
+  async onEditSubmit(handler: () => void) {
+    this.editSubmitHandler = handler;
   }
 }
 
@@ -149,11 +148,11 @@ class AgentManagement implements RedomComponent {
     const agents: Agent[] = await res.json();
     setChildren(this.tbody, []);
     agents.forEach(agent => {
-      const managementActions = new ManagementActions();
-      managementActions.onEdit(async () => {
+      const managementActions = new UserManagementActions();
+      managementActions.onEditClick(async () => {
         
       });
-      managementActions.onDelete(async () => {
+      managementActions.onDeleteClick(async () => {
         const res = await fetch('/api/delete', {
           method: 'post',
           body: JSON.stringify({
@@ -192,9 +191,9 @@ class AgentManagement implements RedomComponent {
     this.updateHandler = handler;
   }
 
-  private editingHandler() {}
-  async onEditing(handler: () => void) {
-    this.editingHandler = handler;
+  private editSubmitHandler() {}
+  async onEditSubmit(handler: () => void) {
+    this.editSubmitHandler = handler;
   }
 }
 

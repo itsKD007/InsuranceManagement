@@ -8,7 +8,9 @@ import {
   Agent as FrontendAgent,
   LoginResponseBody,
   RegisterResponseBody,
-  DeleteResponseBody
+  DeleteResponseBody,
+  ProductName,
+  Policy
 } from './frontend/constants';
 
 export {
@@ -18,7 +20,9 @@ export {
   FrontendCustomer,
   LoginResponseBody,
   RegisterResponseBody,
-  DeleteResponseBody
+  DeleteResponseBody,
+  ProductName,
+  Policy
 };
 
 export interface LoginRequest extends Request {
@@ -42,10 +46,16 @@ export interface RegisterRequest extends Request {
   body: RegisterRequestBody;
 }
 
-export interface DeleteRequest {
+export interface DeleteRequest extends Request {
   body: {
     username: string;
     type: UserType.CUSTOMER | UserType.AGENT;
+  }
+}
+
+export interface GetPoliciesRequest extends Request {
+  query: {
+    username: string
   }
 }
 
@@ -78,7 +88,8 @@ export interface Admin {
 }
 
 export const PORT = process.env.PORT || 3000;
-export const DB_PATH = process.env.DB_PATH || path.join(__dirname, '../databases/users.db');
+export const USER_DB_PATH = process.env.USER_DB_PATH || path.join(__dirname, '../databases/users.db');
+export const POLICY_DB_PATH = process.env.POLICY_DB_PATH || path.join(__dirname, '../databases/policies.db');
 
 export enum LoginErrorMessage {
   NOT_FOUND = "We could not find your user. Are you registered?",

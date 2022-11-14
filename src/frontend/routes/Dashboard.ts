@@ -4,8 +4,43 @@ import LoginRequisitePage from './abstract/LoginRequisitePage';
 import { Icon, Tile } from '../components';
 import { AppState } from '../App';
 import { TilesContainer } from '../components/Tile';
-import { AdminDashboardTileName, Agent, AgentDashboardTileName, Customer, CustomerDashboardTileName, DeleteResponseBody, UserType } from '../constants';
+import {
+  Agent,
+  Customer,
+  AdminDashboardTileName,
+  AgentDashboardTileName,
+  CustomerDashboardTileName,
+  DeleteResponseBody,
+  UserType,
+  Policy,
+  productTitles,
+  ProductName
+} from '../constants';
 import { easyAlert } from '../utils';
+
+class PolicyViewer {
+  private thead = el('thead.kdi-thead', [
+    'Sl. No.',
+    'Policy Name',
+  ].map(text => el('th', text)));
+  private tbody = el('tbody.kdi-tbody');
+  private table = el('table.pure-table.pure-table-bordered', this.thead, this.tbody);
+  el = el('div.table-container', this.table);
+  async init(username: string) {
+    const res = await fetch(
+      '/api/policies?'
+      + new URLSearchParams({ username }).toString()
+    );
+    const policies: ProductName[] = await res.json();
+    setChildren(this.tbody, []);
+    policies.forEach((policy, i) => {
+      mount(this.tbody, el('tr', [
+        el('td', String(i + 1)),
+        el('td', productTitles[policy])
+      ]));
+    });
+  }
+}
 
 class ManagementActions {
   private editButton = el('a.user-edit', new Icon('account-edit'));
@@ -234,7 +269,20 @@ export default class Dashboard extends LoginRequisitePage {
         );
         Object.keys(this.tiles.customer)
           .forEach((tileName: CustomerDashboardTileName) => {
-            
+            this.tiles.customer[tileName].onClick(async () => {
+              switch(tileName) {
+                case 'viewPolicies':
+                  this.heading = 'View Policies';
+                  this.subheading = 'Check Your Active Plans';
+                  await this.animateHide();
+                  const policyViewer = new PolicyViewer()
+                  if(typeof appState.user?.username != 'undefined')
+                    await policyViewer.init(appState.user?.username);
+                  setChildren(this.content, [policyViewer]);
+                  await this.animateShow();
+                  break;
+              }
+            });
           });
         break;
       case 'agent':

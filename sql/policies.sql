@@ -1,0 +1,6 @@
+CREATE TABLE policies (
+  id INTEGER PRIMARY KEY NOT NULL,
+  username VARCHAR NOT NULL,
+  productName VARCHAR NOT NULL
+);
+

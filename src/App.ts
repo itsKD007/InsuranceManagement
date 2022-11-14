@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import path from 'path';
 
 import {
-  PORT, DB_PATH,
+  PORT, USER_DB_PATH, POLICY_DB_PATH,
   LoginRequest,
   RegisterRequest,
   LoginErrorMessage,
@@ -11,13 +11,18 @@ import {
   RegisterErrorMessage,
   UserType,
   DeleteRequest,
-  DeleteResponseBody
+  DeleteResponseBody,
+  GetPoliciesRequest,
+  ProductName
 } from './constants';
 import UserDatabaseDriver from './UserDatabaseDriver';
+import PolicyDatabaseDriver from './PolicyDatabaseDriver';
+import { isEmpty } from 'lodash';
  
 export default class App {
   private server = express();
-  private usersDb = new UserDatabaseDriver(DB_PATH);
+  private usersDb = new UserDatabaseDriver(USER_DB_PATH);
+  private policiesDb = new PolicyDatabaseDriver(POLICY_DB_PATH);
 
   constructor() {
     this.setupHandlers();
@@ -185,6 +190,15 @@ export default class App {
           break;
       }
       res.send(responseBody);
+    });
+
+    this.server.get('/api/policies', async (req: GetPoliciesRequest, res: Response) => {
+      let response: ProductName[] = [];
+      if(!isEmpty(req.query.username)) {
+        const policies = await this.policiesDb.getPoliciesForCustomer(req.query.username);
+        response = policies.map(policy => policy.productName);
+      }
+      res.send(response);
     });
   }
 

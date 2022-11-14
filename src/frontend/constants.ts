@@ -1,3 +1,5 @@
+import { zipObject } from "lodash";
+
 export type RouteName = 'home' | 'dashboard' | 'products' | 'services' | 'login' | 'aboutUs' | 'feedback';
 
 export enum UserType {
@@ -44,6 +46,12 @@ export type ServiceName = 'agentLocator' | 'storeLocator' | 'premiumCalculator';
 export type CustomerDashboardTileName = 'viewPolicies' | 'manageAccount' | 'managePayments';
 export type AgentDashboardTileName = 'manageAccount' | 'manageCustomers';
 export type AdminDashboardTileName = 'manageAccount' | 'manageAgents' | 'managePolicies';
+
+export interface Policy {
+  id: number,
+  username: string;
+  productName: ProductName;
+}
 
 export const alertIconColors = {
   success: '#61cf82',
@@ -157,6 +165,12 @@ Validity: 2 years
 Monthly premium to be paid: Rs 2000`
   }
 }
+
+export const productTitles = zipObject(
+  Object.keys(productDetails),
+  Object.values(productDetails)
+    .map(product => product.title)
+);
 
 export const storeList = [
   {

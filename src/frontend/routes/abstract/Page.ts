@@ -1,5 +1,7 @@
 import { el, RedomComponent } from 'redom';
 
+import { easyAnimate, getClassSelector } from '../../utils';
+
 export default abstract class Page implements RedomComponent {
 
   private headingElem = el('h1', "");
@@ -22,6 +24,22 @@ export default abstract class Page implements RedomComponent {
     this.subheadingElem.textContent = text;
   }
   
+  animateHide() {
+    return easyAnimate(
+      getClassSelector(this.content), [
+        { opacity: 1 }, { opacity: 0 }
+      ], 0.2
+    );
+  }
+
+  animateShow() {
+    return easyAnimate(
+      getClassSelector(this.content), [
+        { opacity: 0 }, { opacity: 1 }
+      ], 0.2
+    );
+  }
+
   constructor(heading: string, subheading: string) {
     this.heading = heading;
     this.subheading = subheading;

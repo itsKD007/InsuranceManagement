@@ -7,7 +7,8 @@ import {
   Customer as FrontendCustomer,
   Agent as FrontendAgent,
   LoginResponseBody,
-  RegisterResponseBody
+  RegisterResponseBody,
+  DeleteResponseBody
 } from './frontend/constants';
 
 export {
@@ -16,7 +17,8 @@ export {
   FrontendAgent,
   FrontendCustomer,
   LoginResponseBody,
-  RegisterResponseBody
+  RegisterResponseBody,
+  DeleteResponseBody
 };
 
 export interface LoginRequest extends Request {
@@ -38,6 +40,13 @@ export interface RegisterRequestBody {
 
 export interface RegisterRequest extends Request {
   body: RegisterRequestBody;
+}
+
+export interface DeleteRequest {
+  body: {
+    username: string;
+    type: UserType.CUSTOMER | UserType.AGENT;
+  }
 }
 
 export interface Customer {
@@ -79,3 +88,4 @@ export enum LoginErrorMessage {
 export enum RegisterErrorMessage {
   ALREADY_EXISTS = "This username already exists in our database. Please choose another username!",
 }
+

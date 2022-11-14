@@ -1,0 +1,26 @@
+.management-buttons {
+  a:hover {
+    cursor: pointer
+  }
+}
+
+thead.kdi-thead, tbody {
+  text-align: center;
+}
+
+thead.kdi-thead {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+tbody {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+table {
+  margin: auto;
+}
+
+.table-container {
+  overflow-x: scroll;
+}
+

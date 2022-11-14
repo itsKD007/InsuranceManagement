@@ -33,7 +33,17 @@ export interface LoginResponseBody {
 
 export type RegisterResponseBody = LoginResponseBody;
 
+export interface DeleteResponseBody {
+  success: boolean;
+}
+
 export type ProductName = 'home' | 'health' | 'life' | 'travel' | 'twoWheeler' | 'fourWheeler';
+
+export type ServiceName = 'agentLocator' | 'storeLocator' | 'premiumCalculator';
+
+export type CustomerDashboardTileName = 'viewPolicies' | 'manageAccount' | 'managePayments';
+export type AgentDashboardTileName = 'manageAccount' | 'manageCustomers';
+export type AdminDashboardTileName = 'manageAccount' | 'manageAgents' | 'managePolicies';
 
 export const alertIconColors = {
   success: '#61cf82',
@@ -76,7 +86,8 @@ Monthly premium to be paid: Rs. 1000`,
   health: {
     title: 'Health Insurance',
     text: `A health insurance policy extends coverage against medical expenses incurred owing to accidents, illness or injury.
-This covers:
+
+This covers losses caused by:
 1. Hospitalisation Expenses
 2. Pre and Post Hospitalisation Charges
 3. No Cap on ICU Room Charges
@@ -117,6 +128,7 @@ Premium to be paid: 10% of the cost of the travel`
   twoWheeler: {
     title: '2 Wheeler Insurance',
     text: `Bike insurance, technically called a two-wheeler insurance, is an ideal tool to safeguard yourself against the financial losses which may arise due to an unfortunate event like a road accident involving the two-wheeler. According to the Indian Motor Tariff, 2002 it is mandatory for every bike owner to have at least a third party bike insurance cover.
+
 This covers losses caused by:
 1. Road Accident
 2. Natural Calamities - Floods, Earthquakes, Cyclones, etc.
@@ -132,6 +144,7 @@ Monthly premium to be paid: Rs. 1000`
     title: '4+ Wheeler Insurance',
     text: `Car insurance policy is bought to protect your car or vehicle, from unexpected or accidental risks. It mainly gives you protection against the losses that you incur in case of unavoidable instances. It helps you get cover against financial losses caused by accidents, liabilities & in some cases, even losses caused by theft. The premium of car insurance depends on certain factors like; the value of your car, type of coverage, voluntary excess & vehicle classification. Car insurance coverage gives you the confidence to drive without worries. In case of emergencies, it acts as a life-saving toolkit for the insurance holder.
 In order to get these benefits continuously, car insurance policy renewal should be done in a timely manner.
+
 This covers losses caused by:
 1. Road Accident
 2. Fire/Explosion damage
@@ -144,3 +157,47 @@ Validity: 2 years
 Monthly premium to be paid: Rs 2000`
   }
 }
+
+export const storeList = [
+  {
+    id: 1,
+    address: "23 A/44X, Diamond Harbour Rd, Sahapur, Taratala, Kolkata, West Bengal 700053",
+  },
+  {
+    id: 2,
+    address: "Thakurpukur Depot Rd, Silpara, Purba Barisha, Kolkata, West Bengal 700008",
+  },
+  {
+    id: 3,
+    address: "4, Radha Gobindo Nath Sarani, Rajendra Prasad Colony, Tollygunge, Kolkata, West Bengal 700033",
+  },
+  {
+    id: 4,
+    address: "218, Prince Golam Mohammed Rd, Manoharpukur, Kalighat, Kolkata, West Bengal 700029",
+  },
+  {
+    id: 5,
+    address: "4, Kasba Industrial Estate, Sector J, East Kolkata Twp, Kolkata, West Bengal 700107",
+  },
+  {
+    id: 6,
+    address: "LB Block, Sector III, Bidhannagar, Kolkata, West Bengal 700098",
+  },
+  {
+    id: 7,
+    address: "EN Block, Sector V, Bidhannagar, Kolkata, West Bengal 700091",
+  },
+  {
+    id: 8,
+    address: "SH 1, Narendrapur, Kolkata, West Bengal 700103",
+  },
+  {
+    id: 9,
+    address: "J735+6V3, Kamrangu, Andul, Howrah, West Bengal 711409",
+  },
+  {
+    id: 10,
+    address: "A1B, Tiljala Rd, Beniapukur, Kolkata, West Bengal 700046"
+  }
+];
+

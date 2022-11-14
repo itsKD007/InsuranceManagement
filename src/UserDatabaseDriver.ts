@@ -78,4 +78,22 @@ export default class UserDatabaseDriver extends DatabaseDriver {
     return admin;
   }
 
+  async deleteCustomer(username: string): Promise<boolean> {
+    if(await this.getCustomer(username) == null)
+      return false;
+    await this.knex<Customer>('customers')
+      .delete()
+      .where('username', username);
+    return true;
+  }
+
+  async deleteAgent(username: string): Promise<boolean> {
+    if(await this.getAgent(username) == null)
+      return false;
+    await this.knex<Agent>('agents')
+      .delete()
+      .where('username', username);
+    return true;
+  }
+
 }

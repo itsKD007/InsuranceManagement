@@ -9,7 +9,9 @@ import {
   LoginResponseBody,
   RegisterResponseBody,
   RegisterErrorMessage,
-  UserType
+  UserType,
+  DeleteRequest,
+  DeleteResponseBody
 } from './constants';
 import UserDatabaseDriver from './UserDatabaseDriver';
  
@@ -158,7 +160,7 @@ export default class App {
     this.server.get('/api/agents', async (_req: Request, res: Response) => {
       const agents = await this.usersDb.getAgents();
       res.send(agents.map(agent => ({
-        customerId: agent.agentId,
+        agentId: agent.agentId,
         username: agent.username,
         name: agent.name,
         email: agent.email,
@@ -168,6 +170,22 @@ export default class App {
       })));
     });
 
+    this.server.post('/api/delete', async (req: DeleteRequest, res: Response) => {
+      const responseBody: DeleteResponseBody = {
+        success: false
+      };
+      switch(req.body.type) {
+        case UserType.CUSTOMER:
+          responseBody.success = await this.usersDb.deleteCustomer(req.body.username);
+          break;
+        case UserType.AGENT:
+          responseBody.success = await this.usersDb.deleteAgent(req.body.username);
+          break;
+        default:
+          break;
+      }
+      res.send(responseBody);
+    });
   }
 
   run() {

@@ -8,8 +8,8 @@
     left: 0;
   }
 
-  div.view {
-    padding: 0 calc(50% - 300px);
+  .text, .tiles-container, .warning {
+    margin: 0 calc(50% - 300px);
   }
 
   div.menu-button {

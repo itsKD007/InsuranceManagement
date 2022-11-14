@@ -1,6 +1,8 @@
 import { el } from 'redom';
 import Scene from 'scenejs';
 import Swal from 'sweetalert2';
+import { inRange } from 'lodash';
+
 import { alertIconColors } from './constants';
 
 export function getClassSelector(element: HTMLElement) {
@@ -39,4 +41,30 @@ export function easyAlert(icon: 'success' | 'error', title: string, text: string
       background: '#f6f6f6'
     }).then(resolve)
   });
+}
+
+export function calculatePremium(baseAmount: number, age: number) {
+
+  let amount = baseAmount;
+
+  // For ages 18 - 25
+  if(inRange(age, 18, 25))
+    amount *= 1.1;
+  // For ages 25 - 30
+  else if(inRange(age, 25, 30))
+    amount *= Math.pow(1.1, 2);
+  // For ages 30 - 35
+  else if(inRange(age, 30, 35))
+    amount *= Math.pow(1.1, 3);
+  // For ages 35 - 40
+  else if(inRange(age, 35, 40))
+    amount *= Math.pow(1.1, 4);
+  // For ages 40+
+  else {
+    amount *= Math.pow(1.1, 4);
+    amount *= 1.02;
+  }
+
+  return amount;
+
 }

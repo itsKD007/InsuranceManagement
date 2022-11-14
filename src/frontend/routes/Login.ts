@@ -6,7 +6,7 @@ import Page from './abstract/Page';
 import { LoginResponseBody, RegisterResponseBody, tileColors, tileIcons, User, UserType } from '../constants';
 
 import { Tile } from '../components';
-import { easyAlert, easyAnimate, getClassSelector } from '../utils';
+import { easyAlert } from '../utils';
 import { textToParagraphs } from '../utils';
 import { TilesContainer } from '../components/Tile';
 
@@ -50,7 +50,7 @@ class LoginForm implements RedomComponent {
 
   submitButton = el('button.btn-submit.btn-login.pure-button', "Login");
 
-  el = el('form.pure-form.pure-form-stacked.form-login',
+  el = el('form.pure-form.pure-form-stacked.kdi-form.form-login',
     el('fieldset',
       el('label', {for: 'username'}, "Username"),
       this.inputs.username,
@@ -124,7 +124,7 @@ class RegisterForm implements RedomComponent {
 
   submitButton = el('button.btn-submit.btn-register.pure-button', "Register");
 
-  el = el('form.pure-form.pure-form-stacked.form-register',
+  el = el('form.pure-form.pure-form-stacked.kdi-form.form-register',
     el('fieldset',
       el('label', {for: 'username'}, "Username"),
       this.inputs.username,
@@ -218,22 +218,6 @@ Have a great rest of your day, and we hope to see you again!`;
   private tilesContainer = new TilesContainer(Object.values(this.tiles));
 
   private registerLink = new RegisterLink();
-
-  animateHide() {
-    return easyAnimate(
-      getClassSelector(this.content), [
-        { opacity: 1 }, { opacity: 0 }
-      ], 0.2
-    );
-  }
-
-  animateShow() {
-    return easyAnimate(
-      getClassSelector(this.content), [
-        { opacity: 0 }, { opacity: 1 }
-      ], 0.2
-    );
-  }
 
   constructor() {
     super("Login", "Access Your Account");
@@ -344,7 +328,7 @@ Have a great rest of your day, and we hope to see you again!`;
         if([UserType.CUSTOMER, UserType.AGENT].includes(userType)) {
           setupRegisterForm(userType);
           this.registerLink.text = ({
-            [UserType.CUSTOMER]: "New User? Register Here.",
+            [UserType.CUSTOMER]: "New Customer? Register Here.",
             [UserType.AGENT]: "Want to work with us? Register Here.",
             [UserType.ADMIN]: "Found a bug? Report to us."
           }[userType]);

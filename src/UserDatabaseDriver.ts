@@ -1,5 +1,11 @@
 import DatabaseDriver from './DatabaseDriver';
-import { Customer, Agent, RegisterRequestBody, Admin } from './constants';
+import {
+  Customer,
+  Agent,
+  Admin,
+  RegisterRequestBody,
+  UserUpdateRequestBody
+} from './constants';
 
 export default class UserDatabaseDriver extends DatabaseDriver {
 
@@ -96,4 +102,30 @@ export default class UserDatabaseDriver extends DatabaseDriver {
     return true;
   }
 
+  async updateCustomer(body: UserUpdateRequestBody): Promise<boolean> {
+    const customer = await this.getCustomer(body.username);
+    if(customer == null) return false;
+    await this.knex<Customer>('customers').update({
+      password: body.password || customer.password,
+      name: body.name,
+      email: body.email,
+      phone: body.phone
+    }).where('username', body.username);
+    return true;
+  }
+
+  async updateAgent(body: UserUpdateRequestBody): Promise<boolean> {
+    const agent = await this.getAgent(body.username);
+    if(agent == null) return false;
+    await this.knex<Agent>('agents').update({
+      password: body.password || agent.password,
+      name: body.name,
+      email: body.email,
+      phone: body.phone,
+      areaCode: body.areaCode || agent.areaCode
+    }).where('username', body.username);
+    return true;
+  }
+
 }
+

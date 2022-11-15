@@ -1,7 +1,7 @@
 import { el } from 'redom';
 import Scene from 'scenejs';
 import Swal from 'sweetalert2';
-import { inRange } from 'lodash';
+import { flatMap, inRange } from 'lodash';
 
 import { alertIconColors } from './constants';
 
@@ -12,7 +12,14 @@ export function getClassSelector(element: HTMLElement) {
 } 
 
 export function textToParagraphs(text: string) {
-  return text.split('\n\n').map(text => el('p', text))
+  return text.split('\n\n')
+    .map(text =>
+      el('p', flatMap(text.split('\n'), (value, index, array) =>
+         array.length - 1 != index 
+         ? [value, el('br')]
+         : value
+      ))
+    );
 }
 
 export function easyAnimate(selector: string, keyframes: [object, object], duration: number = 0.5) {

@@ -7,9 +7,40 @@
 
 .kdi-form {
   fieldset {
+    border: none;
     color: rgba(0, 0, 0, 0.65);
     max-width: 300px;
     margin: auto;
     line-height: 1.5em;
+  }
+}
+
+.form-payment-management {
+  fieldset {
+    max-width: 260px;
+    border-radius: 20px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+  span {
+    min-width: 200px;
+  }
+  input {
+    width: 16px;
+    height: 16px;
+    margin: 5px;
+  }
+  label {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    font-size: 1.2em;
+  }
+}
+
+.form-feedback {
+  textarea {
+    min-width: 100%;
+    min-height: 150px;
   }
 }

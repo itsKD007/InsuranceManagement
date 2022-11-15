@@ -33,7 +33,7 @@ class RegisterLink implements RedomComponent {
 
 class LoginForm implements RedomComponent {
 
-  inputs = {
+  private inputs = {
     username: el('input.pure-input-1', {
         type: 'text',
         name: 'username',
@@ -48,7 +48,7 @@ class LoginForm implements RedomComponent {
     }) as HTMLInputElement
   };
 
-  submitButton = el('button.btn-submit.btn-login.pure-button', "Login");
+  private submitButton = el('button.btn-submit.btn-login.pure-button', "Login");
 
   el = el('form.pure-form.pure-form-stacked.kdi-form.form-login',
     el('fieldset',
@@ -82,7 +82,7 @@ class LoginForm implements RedomComponent {
 
 class RegisterForm implements RedomComponent {
 
-  inputs = {
+  private inputs = {
     username: el('input.pure-input-1', {
         type: 'text',
         name: 'username',
@@ -122,7 +122,7 @@ class RegisterForm implements RedomComponent {
     }) as HTMLInputElement
   };
 
-  submitButton = el('button.btn-submit.btn-register.pure-button', "Register");
+  private submitButton = el('button.btn-submit.btn-register.pure-button', "Register");
 
   el = el('form.pure-form.pure-form-stacked.kdi-form.form-register',
     el('fieldset',
@@ -174,7 +174,7 @@ class RegisterForm implements RedomComponent {
     });
   }
 
-  submitHandler() {}
+  private submitHandler() {}
 
   onSubmit(handler: () => void) {
     this.submitHandler = handler;

@@ -1,5 +1,3 @@
-import { zipObject } from "lodash";
-
 export type RouteName = 'home' | 'dashboard' | 'products' | 'services' | 'login' | 'aboutUs' | 'feedback';
 
 export enum UserType {
@@ -35,11 +33,16 @@ export interface LoginResponseBody {
 
 export type RegisterResponseBody = LoginResponseBody;
 
-export interface DeleteResponseBody {
+export interface UserDeleteResponseBody {
   success: boolean;
 }
 
-export type ProductName = 'home' | 'health' | 'life' | 'travel' | 'twoWheeler' | 'fourWheeler';
+export type UserUpdateResponseBody = UserDeleteResponseBody;
+
+export type AddPolicyResponseBody = UserDeleteResponseBody;
+
+export const productNames = ['home', 'health', 'life', 'travel', 'twoWheeler', 'fourWheeler'] as const;
+export type ProductName = typeof productNames[number];
 
 export type ServiceName = 'agentLocator' | 'storeLocator' | 'premiumCalculator';
 
@@ -48,9 +51,34 @@ export type AgentDashboardTileName = 'manageAccount' | 'manageCustomers';
 export type AdminDashboardTileName = 'manageAccount' | 'manageAgents' | 'managePolicies';
 
 export interface Policy {
-  id: number,
+  id: number;
   username: string;
   productName: ProductName;
+}
+
+export interface UserManagementEditorEditParams {
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export type CustomerManagementEditorEditParams = UserManagementEditorEditParams;
+
+export interface AgentManagementEditorEditParams extends UserManagementEditorEditParams {
+  areaCode: number;
+}
+
+export interface UserManagementEditorSubmitParams {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+export type CustomerManagementEditorSubmitParams = UserManagementEditorSubmitParams;
+
+export interface AgentManagementEditorSubmitParams extends UserManagementEditorSubmitParams {
+  areaCode: number;
 }
 
 export const alertIconColors = {
@@ -74,9 +102,27 @@ export const tileColors = {
   }
 }
 
+export const productCosts: {[key in ProductName]: number} = {
+  home: 1000,
+  health: 1500,
+  life: 1500,
+  travel: 2000,
+  twoWheeler: 1000,
+  fourWheeler: 2000
+}
+
+export const productTitles: {[key in ProductName]: string} = {
+  home: 'Home Insurance',
+  health: 'Health Insurance',
+  travel: 'Travel Insurance',
+  life: 'Life Insurance',
+  twoWheeler: '2 Wheeler Insurance',
+  fourWheeler: '4+ Wheeler Insurance'
+}
+
 export const productDetails = {
   home: {
-    title: 'Home Insurance',
+    title: productTitles['home'],
     text: `This policy covers interior damage, exterior damage, loss or damage of personal assets, and injury that arises while on the property.
 
 This covers losses caused by:
@@ -89,10 +135,10 @@ This covers losses caused by:
 7. Earthquake
 
 Validity: 5 years
-Monthly premium to be paid: Rs. 1000`,
+Monthly premium to be paid: Rs. ${productCosts['home']}`,
   },
   health: {
-    title: 'Health Insurance',
+    title: productTitles['health'],
     text: `A health insurance policy extends coverage against medical expenses incurred owing to accidents, illness or injury.
 
 This covers losses caused by:
@@ -107,19 +153,19 @@ This covers losses caused by:
 9. Domiciliary Care
 
 Validity: 10 years
-Monthly premium to be paid: Rs. 1500`,
+Monthly premium to be paid: Rs. ${productCosts['health']}`,
   },
   life: {
-    title: 'Life Insurance',
+    title: productTitles['life'],
     text: `Life insurance is a contract between an insurer and a policy owner. A life insurance policy guarantees the insurer pays a sum of money to named beneficiaries when the insured dies in exchange for the premiums paid by the policyholder during their lifetime.
 
 The life insurance application must accurately disclose the insured’s past and current health conditions and high-risk activities to enforce the contract.
 
 Validity: 5 years
-Monthly premium to be paid: Rs. 1500`
+Monthly premium to be paid: Rs. ${productCosts['life']}`
   },
   travel: {
-    title: 'Travel Insurance',
+    title: productTitles['travel'],
     text: `Planning travel, whether it be for business or pleasure, takes time and energy, not to mention money. The last thing anyone wants is to miss out on a well-deserved vacation because of circumstances outside of their control, such as weather, illness, or baggage loss.
 Travel insurance covers a pre-planned trip and will reimburse the policyholder if certain unforeseen circumstances occur. You can think of travel insurance as a way to protect your investment in a trip before and during travel.
 
@@ -131,10 +177,10 @@ This covers losses caused by:
 5. Accidental Death & Dismemberment
 
 Validity: 6 months
-Premium to be paid: 10% of the cost of the travel`
+Premium to be paid: Rs. ${productCosts['travel']}`
   },
   twoWheeler: {
-    title: '2 Wheeler Insurance',
+    title: productTitles['twoWheeler'],
     text: `Bike insurance, technically called a two-wheeler insurance, is an ideal tool to safeguard yourself against the financial losses which may arise due to an unfortunate event like a road accident involving the two-wheeler. According to the Indian Motor Tariff, 2002 it is mandatory for every bike owner to have at least a third party bike insurance cover.
 
 This covers losses caused by:
@@ -146,10 +192,10 @@ This covers losses caused by:
 6. Damage During Travel By Air, Rail, Road, Water.
 
 Validity: 2 years
-Monthly premium to be paid: Rs. 1000`
+Monthly premium to be paid: ${productCosts['twoWheeler']}`
   },
   fourWheeler: {
-    title: '4+ Wheeler Insurance',
+    title: productTitles['fourWheeler'],
     text: `Car insurance policy is bought to protect your car or vehicle, from unexpected or accidental risks. It mainly gives you protection against the losses that you incur in case of unavoidable instances. It helps you get cover against financial losses caused by accidents, liabilities & in some cases, even losses caused by theft. The premium of car insurance depends on certain factors like; the value of your car, type of coverage, voluntary excess & vehicle classification. Car insurance coverage gives you the confidence to drive without worries. In case of emergencies, it acts as a life-saving toolkit for the insurance holder.
 In order to get these benefits continuously, car insurance policy renewal should be done in a timely manner.
 
@@ -162,15 +208,9 @@ This covers losses caused by:
 6. Damage During Travel By Air, Rail, Road, Water.
 
 Validity: 2 years
-Monthly premium to be paid: Rs 2000`
+Monthly premium to be paid: Rs ${productCosts['fourWheeler']}`
   }
 }
-
-export const productTitles = zipObject(
-  Object.keys(productDetails),
-  Object.values(productDetails)
-    .map(product => product.title)
-);
 
 export const storeList = [
   {

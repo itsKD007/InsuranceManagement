@@ -10,14 +10,19 @@ import {
   RegisterResponseBody,
   RegisterErrorMessage,
   UserType,
-  DeleteRequest,
-  DeleteResponseBody,
+  UserDeleteRequest,
+  UserDeleteResponseBody,
+  UserUpdateResponseBody,
   GetPoliciesRequest,
-  ProductName
+  ProductName,
+  UserUpdateRequest,
+  AddPolicyRequest,
+  RemovePolicyRequest
 } from './constants';
 import UserDatabaseDriver from './UserDatabaseDriver';
 import PolicyDatabaseDriver from './PolicyDatabaseDriver';
 import { isEmpty } from 'lodash';
+import { AddPolicyResponseBody } from './frontend/constants';
  
 export default class App {
   private server = express();
@@ -175,8 +180,8 @@ export default class App {
       })));
     });
 
-    this.server.post('/api/delete', async (req: DeleteRequest, res: Response) => {
-      const responseBody: DeleteResponseBody = {
+    this.server.post('/api/delete', async (req: UserDeleteRequest, res: Response) => {
+      const responseBody: UserDeleteResponseBody = {
         success: false
       };
       switch(req.body.type) {
@@ -192,14 +197,50 @@ export default class App {
       res.send(responseBody);
     });
 
+    this.server.post('/api/update', async (req: UserUpdateRequest, res: Response) => {
+      const responseBody: UserUpdateResponseBody = {
+        success: false
+      };
+      switch(req.body.type) {
+        case UserType.CUSTOMER:
+          responseBody.success = await this.usersDb.updateCustomer(req.body);
+          break;
+        case UserType.AGENT:
+          responseBody.success = await this.usersDb.updateAgent(req.body);
+          break;
+        default:
+          break;
+      }
+      res.send(responseBody);
+    });
+
     this.server.get('/api/policies', async (req: GetPoliciesRequest, res: Response) => {
-      let response: ProductName[] = [];
+      let responseBody: ProductName[] = [];
       if(!isEmpty(req.query.username)) {
         const policies = await this.policiesDb.getPoliciesForCustomer(req.query.username);
-        response = policies.map(policy => policy.productName);
+        responseBody = policies.map(policy => policy.productName);
       }
-      res.send(response);
+      res.send(responseBody);
     });
+
+    this.server.post('/api/addpolicy', async (req: AddPolicyRequest, res: Response) => {
+      let responseBody: AddPolicyResponseBody = {
+        success: true
+      };
+      for(const policy of req.body.policyNames) {
+        await this.policiesDb.addPolicy(req.body.username, policy);
+      }
+      res.send(responseBody)
+    });
+
+    this.server.post('/api/removepolicy', async (req: RemovePolicyRequest, res: Response) => {
+      let responseBody: AddPolicyResponseBody = {
+        success: true
+      };
+      await this.policiesDb.removePolicy(req.body.username, req.body.policyName);
+      res.send(responseBody)
+    });
+
   }
 
   run() {

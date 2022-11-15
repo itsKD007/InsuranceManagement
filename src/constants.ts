@@ -8,7 +8,8 @@ import {
   Agent as FrontendAgent,
   LoginResponseBody,
   RegisterResponseBody,
-  DeleteResponseBody,
+  UserDeleteResponseBody,
+  UserUpdateResponseBody,
   ProductName,
   Policy
 } from './frontend/constants';
@@ -20,7 +21,8 @@ export {
   FrontendCustomer,
   LoginResponseBody,
   RegisterResponseBody,
-  DeleteResponseBody,
+  UserDeleteResponseBody,
+  UserUpdateResponseBody,
   ProductName,
   Policy
 };
@@ -46,7 +48,7 @@ export interface RegisterRequest extends Request {
   body: RegisterRequestBody;
 }
 
-export interface DeleteRequest extends Request {
+export interface UserDeleteRequest extends Request {
   body: {
     username: string;
     type: UserType.CUSTOMER | UserType.AGENT;
@@ -56,6 +58,34 @@ export interface DeleteRequest extends Request {
 export interface GetPoliciesRequest extends Request {
   query: {
     username: string
+  }
+}
+
+export interface UserUpdateRequestBody {
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  password?: string;
+  areaCode?: number;
+  type: UserType.CUSTOMER | UserType.AGENT;
+}
+
+export interface UserUpdateRequest {
+  body: UserUpdateRequestBody;
+}
+
+export interface AddPolicyRequest {
+  body: {
+    username: string;
+    policyNames: ProductName[];
+  }
+}
+
+export interface RemovePolicyRequest {
+  body: {
+    username: string;
+    policyName: ProductName;
   }
 }
 

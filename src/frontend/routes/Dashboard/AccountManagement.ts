@@ -1,8 +1,9 @@
 import { el, RedomComponent } from 'redom';
-import { CustomerManagementEditorSubmitParams } from '../../constants';
 import { easyAlert } from '../../utils';
 
-export default class CustomerEditor implements RedomComponent {
+import { AccountManagementSubmitParams } from '../../constants';
+
+export default class AccountManagement implements RedomComponent {
 
   private inputs = {
     name: el('input.pure-input-1', {
@@ -20,7 +21,13 @@ export default class CustomerEditor implements RedomComponent {
         name: 'phone',
         placeholder: "Phone Number",
         pattern: "\\d{10}"
+    }) as HTMLInputElement,
+    password: el('input.pure-input-1', {
+        type: 'password',
+        name: 'password',
+        placeholder: "Password",
     }) as HTMLInputElement
+
   }
   private submitButton = el('button.btn-submit.pure-button', "Save");
   el = el('form.kdi-form.pure-form.pure-form-stacked',
@@ -31,6 +38,8 @@ export default class CustomerEditor implements RedomComponent {
       this.inputs.email,
       el('label', {for: 'phone'}, "Phone Number"),
       this.inputs.phone,
+      el('label', {for: 'password'}, "Password"),
+      this.inputs.password,
       this.submitButton)) as HTMLFormElement;
 
   constructor() {
@@ -40,7 +49,8 @@ export default class CustomerEditor implements RedomComponent {
       this.submitHandler({
         name: this.inputs.name.value,
         email: this.inputs.email.value,
-        phone: this.inputs.phone.value
+        phone: this.inputs.phone.value,
+        password: this.inputs.password.value
       });
     });
   }
@@ -62,9 +72,8 @@ export default class CustomerEditor implements RedomComponent {
     this.inputs.phone.value = phone;
   }
 
-  private submitHandler(_params: CustomerManagementEditorSubmitParams) {}
-  onSubmit(handler: (params: CustomerManagementEditorSubmitParams) => void) {
+  private submitHandler(_params: AccountManagementSubmitParams) {}
+  onSubmit(handler: (params: AccountManagementSubmitParams) => void) {
     this.submitHandler = handler;
   }
 }
-

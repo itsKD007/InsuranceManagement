@@ -20,7 +20,6 @@ export default class AgentEditor implements RedomComponent {
     phone: el('input.pure-input-1', {
         type: 'tel',
         name: 'phone',
-        required: true,
         placeholder: "Phone Number",
         pattern: "\\d{10}"
     }) as HTMLInputElement,

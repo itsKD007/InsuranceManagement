@@ -81,6 +81,14 @@ export interface AgentManagementEditorSubmitParams extends UserManagementEditorS
   areaCode: number;
 }
 
+export interface AccountManagementSubmitParams {
+  name: string;
+  email: string;
+  phone: string;
+  password?: string;
+}
+
+
 export const alertIconColors = {
   success: '#61cf82',
   error: '#cf6161'

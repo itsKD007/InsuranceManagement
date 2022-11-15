@@ -1,5 +1,7 @@
 import { el, setChildren } from 'redom';
 
+import { sum } from 'lodash';
+
 import LoginRequisitePage from '../abstract/LoginRequisitePage';
 import { Tile } from '../../components';
 import { AppState } from '../../App';
@@ -9,6 +11,7 @@ import {
   AgentDashboardTileName,
   CustomerDashboardTileName,
   productCosts,
+  User,
   UserType,
   UserUpdateResponseBody,
 } from '../../constants';
@@ -20,7 +23,7 @@ import CustomerManagement from './CustomerManagement';
 import CustomerEditor from './CustomerEditor';
 import PolicyViewer from './PolicyViewer';
 import PaymentManagement from './PaymentManagement';
-import { sum } from 'lodash';
+import AccountManagement from './AccountManagement';
 
 export default class Dashboard extends LoginRequisitePage {
 
@@ -81,6 +84,40 @@ export default class Dashboard extends LoginRequisitePage {
     super("Dashboard", "Manage Your Account")
   }
 
+  setupAccountManagement(user: User) {
+    const accountManagement = new AccountManagement();
+    accountManagement.setValues(
+      user.name,
+      user.email,
+      user.phone
+    );
+    accountManagement.onSubmit(async params => {
+      await fetch('/api/update', {
+        method: 'post',
+        body: JSON.stringify({
+          username: user.username,
+          name: params.name,
+          email: params.email,
+          phone: params.phone,
+          password: params.password,
+          type: user.type
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      easyAlert(
+        'success',
+        "Account Updated",
+        "Your changes have been successfully saved"
+      );
+      await this.animateHide();
+      setChildren(this.content, [this.tilesContainer]);
+      await this.animateShow();
+    });
+    return accountManagement;
+  }
+
   setupCustomerDashboard(appState: AppState) {
     this.tilesContainer.setTiles(
       Object.values(this.tiles.customer)
@@ -89,8 +126,15 @@ export default class Dashboard extends LoginRequisitePage {
       this.tiles.customer[tileName].onClick(async () => {
         if(!appState.isLoggedIn || appState.user == null)
           return;
-
         switch(tileName) {
+          case 'manageAccount':
+            this.heading = 'Manage Account';
+            this.subheading = 'Modify Your Account Details';
+            const accountManagement = this.setupAccountManagement(appState.user);
+            await this.animateHide();
+            setChildren(this.content, [accountManagement]);
+            await this.animateShow();
+            break;
           case 'viewPolicies':
             this.heading = 'View Policies';
             this.subheading = 'Check Your Active Plans';
@@ -144,7 +188,17 @@ export default class Dashboard extends LoginRequisitePage {
     );
     Object.keys(this.tiles.agent).forEach((tileName: AgentDashboardTileName) => {
       this.tiles.agent[tileName].onClick(async () => {
+        if(!appState.isLoggedIn || appState.user == null)
+          return;
         switch(tileName) {
+          case 'manageAccount':
+            this.heading = 'Manage Account';
+            this.subheading = 'Modify Your Account Details';
+            const accountManagement = this.setupAccountManagement(appState.user);
+            await this.animateHide();
+            setChildren(this.content, [accountManagement]);
+            await this.animateShow();
+            break;
           case 'manageCustomers':
             this.heading = 'Manage Customers';
             this.subheading = 'Modify or Close Accounts'
@@ -204,7 +258,7 @@ export default class Dashboard extends LoginRequisitePage {
             break;
         }
       });
-      });
+    });
   }
 
   setupAdminDashboard(appState: AppState) {
@@ -213,7 +267,17 @@ export default class Dashboard extends LoginRequisitePage {
     );
     Object.keys(this.tiles.admin).forEach((tileName: AdminDashboardTileName) => {
       this.tiles.admin[tileName].onClick(async () => {
+        if(!appState.isLoggedIn || appState.user == null)
+          return;
         switch(tileName) {
+          case 'manageAccount':
+            this.heading = 'Manage Account';
+            this.subheading = 'Modify Your Account Details';
+            const accountManagement = this.setupAccountManagement(appState.user);
+            await this.animateHide();
+            setChildren(this.content, [accountManagement]);
+            await this.animateShow();
+            break;
           case 'manageAgents':
             this.heading = 'Manage Agents';
             this.subheading = 'Modify or Close Accounts'

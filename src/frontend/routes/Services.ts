@@ -57,8 +57,8 @@ class PremiumCalculator implements RedomComponent {
     name: 'base-amount',
     required: true,
     placeholder: "Base Amount",
-    value: 5000,
-    min: 5000
+    value: 1000,
+    min: 1000
   }) as HTMLInputElement;
   private ageInput = el('input.pure-input-1', {
     type: 'number',

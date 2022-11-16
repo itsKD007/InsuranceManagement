@@ -16,7 +16,9 @@ export default class PolicyViewer implements RedomComponent {
   ].map(text => el('th', text)));
   private tbody = el('tbody.kdi-tbody');
   private table = el('table.pure-table.pure-table-bordered', this.thead, this.tbody);
+
   el = el('div.table-container', this.table);
+
   async init(username: string): Promise<ProductName[]> {
     const res = await fetch(
       '/api/policies?'
@@ -24,6 +26,15 @@ export default class PolicyViewer implements RedomComponent {
     );
     const policies: ProductName[] = await res.json();
     setChildren(this.tbody, []);
+    if(policies.length == 0) {
+      this.noPoliciesFoundHandler();
+    } else {
+      this.mountRows(username, policies);
+    }
+    return policies;
+  }
+
+  private mountRows(username: string, policies: ProductName[]) {
     policies.forEach((policyName, i) => {
       const managementActions = new PolicyManagementActions();
       managementActions.onDeleteClick(async () => {
@@ -50,6 +61,10 @@ export default class PolicyViewer implements RedomComponent {
         el('td', managementActions)
       ]));
     });
-    return policies;
+  }
+
+  private noPoliciesFoundHandler() {}
+  onNoPoliciesFound(handler: () => void) {
+    this.noPoliciesFoundHandler = handler;
   }
 }

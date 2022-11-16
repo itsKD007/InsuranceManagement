@@ -141,6 +141,9 @@ export default class Dashboard extends LoginRequisitePage {
             await this.animateHide();
             const policyViewer = new PolicyViewer()
             const policies = await policyViewer.init(appState.user.username);
+            policyViewer.onNoPoliciesFound(() => {
+              setChildren(this.content, [el('p.warning', "You do not have any active policies.")]);
+            });
             if(policies.length == 0)
               setChildren(this.content, [el('p.warning', "You do not have any active policies.")]);
             else

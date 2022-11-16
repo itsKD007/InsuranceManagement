@@ -24,6 +24,8 @@ import CustomerEditor from './CustomerEditor';
 import PolicyViewer from './PolicyViewer';
 import PaymentManagement from './PaymentManagement';
 import AccountManagement from './AccountManagement';
+import PolicyManagement, { NewPolicyLink } from './PolicyManagement';
+import NewPolicyForm from './NewPolicyForm';
 
 export default class Dashboard extends LoginRequisitePage {
 
@@ -345,6 +347,39 @@ export default class Dashboard extends LoginRequisitePage {
               await animateUpdateAndShow('viewer');
             });
             await animateUpdateAndShow('viewer');
+            break;
+
+          case 'managePolicies':
+            this.heading = 'Manage Policies';
+            this.subheading = 'Add or Remove Policies';
+            const policyManagement = new PolicyManagement();
+            const newPolicyLink = new NewPolicyLink();
+            newPolicyLink.onClick(async () => {
+              const newPolicyForm = new NewPolicyForm();
+              newPolicyForm.onSubmit(async () => {
+                await this.animateHide();
+                easyAlert(
+                  'success',
+                  'Policy Submitted',
+                  "Your request for a new policy has been successfully submitted. It is currently in queue and will be reviewed shortly."
+                );
+                this.update(appState);
+                await this.animateShow();
+              })
+              await this.animateHide();
+              setChildren(this.content, [newPolicyForm]);
+              await this.animateShow();
+            });
+            await this.animateHide();
+            policyManagement.init();
+            policyManagement.onNoPoliciesFound(() => {
+              setChildren(this.content, [
+                el('p.warning', "You have requested for removal of all policies!"),
+                newPolicyLink
+              ]);
+            });
+            setChildren(this.content, [policyManagement, newPolicyLink]);
+            await this.animateShow();
             break;
         }
       });

@@ -86,6 +86,7 @@ header {
   border-radius: 5px;
   border: 1px solid #c4b17a;
   color: #44320e;
+  margin-bottom: 15px;
 }
 
 .app {
@@ -95,6 +96,10 @@ header {
   color: #262626;
   font-size: 16px;
   font-family: sans-serif;
+}
+
+.text {
+  text-align: justify;
 }
 
 .view {

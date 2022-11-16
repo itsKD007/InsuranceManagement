@@ -2,6 +2,7 @@ import { difference, sum } from 'lodash';
 import { el, mount, RedomComponent } from 'redom';
 
 import { productTitles, ProductName, productNames, productCosts } from '../../constants';
+import { easyAlert } from '../../utils';
 
 export default class PaymentManagement implements RedomComponent {
 
@@ -41,6 +42,7 @@ export default class PaymentManagement implements RedomComponent {
   constructor() {
     this.submitButton.addEventListener('click', event => {
       event.preventDefault();
+      if(!this.validate()) return;
       this.submitHandler(
         productNames.filter(policy =>
           this.checkboxes[policy].checked)
@@ -80,6 +82,23 @@ export default class PaymentManagement implements RedomComponent {
       mount(this, this.fieldset);
     }
     return availablePolicies;
+  }
+
+  private validate() {
+    const atLeastOneSelected =  Object.values(this.checkboxes)
+      .findIndex(checkbox => checkbox.checked) != -1;
+
+    if(!atLeastOneSelected) {
+      easyAlert(
+        'error',
+        "Error",
+        "You must select at least one policy!"
+      );
+      return false;
+    }
+
+    return true;
+
   }
 
   private submitHandler(_selectedPolicies: ProductName[]) {}

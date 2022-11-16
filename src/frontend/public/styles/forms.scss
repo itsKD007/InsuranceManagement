@@ -1,4 +1,4 @@
-.register-link-container {
+.link-container {
   a {
     color: rgba(0, 0, 0, 0.5);
   }
@@ -17,10 +17,7 @@
 
 .form-payment-management {
   fieldset {
-    max-width: 260px;
-    border-radius: 20px;
-    padding: 20px;
-    background-color: rgba(0, 0, 0, 0.02);
+    max-width: 270px;
   }
   span {
     min-width: 200px;
@@ -29,18 +26,21 @@
     width: 16px;
     height: 16px;
     margin: 5px;
+    background-color: rgba(255, 255, 255, 0.5)
   }
   label {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
     font-size: 1.2em;
+    background: rgba(0,0,0,0.04);
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
 }
 
-.form-feedback {
-  textarea {
-    min-width: 100%;
-    min-height: 150px;
-  }
+textarea {
+  min-width: 100%;
+  min-height: 150px;
 }

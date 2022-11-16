@@ -16,7 +16,7 @@ class RegisterLink implements RedomComponent {
     { href: '#' },
     ""
   );
-  el = el('div.register-link-container', this.a);
+  el = el('div.link-container.register-link-container', this.a);
   constructor() {
     this.a.addEventListener('click', () => {
       this.clickHandler();

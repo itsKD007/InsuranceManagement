@@ -200,7 +200,7 @@ This covers losses caused by:
 6. Damage During Travel By Air, Rail, Road, Water.
 
 Validity: 2 years
-Monthly premium to be paid: ${productCosts['twoWheeler']}`
+Monthly premium to be paid: Rs. ${productCosts['twoWheeler']}`
   },
   fourWheeler: {
     title: productTitles['fourWheeler'],

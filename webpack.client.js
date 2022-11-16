@@ -26,6 +26,11 @@ module.exports = {
             {
                 test: /\.scss$/i,
                 use: [ 'style-loader', 'css-loader', 'sass-loader' ]
+            },
+            {
+                test: /favicon\.ico$/i,
+                loader: 'file-loader',
+                options: { name: 'favicon.ico' }
             }
         ],
     },

@@ -15,7 +15,7 @@ Thank you for choosing us!
 
 ---
 
-This application was built as a software engineering project for the ESC-501 course, with the topic being a web-based "insurance management system". What started out small has since grown into a comprehensive, efficient and functional system, and all of the ideas in our software requirements specifications (SRS) document have come to fruition.
+This application was built as a software engineering project for the ESC-591 course, with the topic being a web-based "insurance management system". What started out small has since grown into a comprehensive, efficient and functional system, and all of the ideas in our software requirements specifications (SRS) document have come to fruition.
 
 Kaustav Doari
 13000120049`;

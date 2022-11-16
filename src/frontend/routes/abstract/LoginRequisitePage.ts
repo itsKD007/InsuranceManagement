@@ -5,7 +5,7 @@ import { AppState } from '../../App';
 
 export default abstract class LoginRequisitePage extends Page {
 
-  private loginWarning = el('p.warning', "You need to log in to use this feature!");
+  private loginWarning = el('p.warning', "You need to log in to use this feature.");
 
   constructor(heading: string, subheading: string) {
     super(heading, subheading);

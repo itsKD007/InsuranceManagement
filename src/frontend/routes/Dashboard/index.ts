@@ -140,8 +140,11 @@ export default class Dashboard extends LoginRequisitePage {
             this.subheading = 'Check Your Active Plans';
             await this.animateHide();
             const policyViewer = new PolicyViewer()
-            await policyViewer.init(appState.user.username);
-            setChildren(this.content, [policyViewer]);
+            const policies = await policyViewer.init(appState.user.username);
+            if(policies.length == 0)
+              setChildren(this.content, [el('p.warning', "You do not have any active policies.")]);
+            else
+              setChildren(this.content, [policyViewer]);
             await this.animateShow();
             break;
 
@@ -173,8 +176,11 @@ export default class Dashboard extends LoginRequisitePage {
               this.update(appState);
               await this.animateShow();
             });
-            await paymentManagement.init(appState.user.username);
-            setChildren(this.content, [paymentManagement]);
+            const availablePolicies = await paymentManagement.init(appState.user.username);
+            if(availablePolicies.length == 0)
+              setChildren(this.content, [el('p.warning', "We do not have any policies to offer at the moment.")]);
+            else
+              setChildren(this.content, [paymentManagement]);
             await this.animateShow();
             break;
         }

@@ -1,8 +1,8 @@
-import { el } from 'redom';
+import { el, RedomComponent } from 'redom';
 
 import { Icon } from '../../components';
 
-export default class PolicyManagementActions {
+export default class PolicyManagementActions implements RedomComponent {
   protected deleteButton = el('a.policy-delete', new Icon('file-document-remove'));
   
   el = el('div.management-buttons', this.deleteButton);

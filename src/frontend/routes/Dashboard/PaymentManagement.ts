@@ -61,20 +61,25 @@ export default class PaymentManagement implements RedomComponent {
     });
   }
 
-  async init(username: string) {
+  async init(username: string): Promise<ProductName[]> {
     const res = await fetch(
       '/api/policies?'
       + new URLSearchParams({ username }).toString()
     );
-    const policiesTaken: ProductName[] = await res.json();
-    difference(productNames, policiesTaken).forEach(policy => {
-      mount(this.fieldset,
-        el('label', { for: policy }, 
-          this.checkboxes[policy],
-          el('span', productTitles[policy])),
-      );
-    });
-    mount(this.fieldset, this.submitButton);
+    const policiesAlreadyTaken: ProductName[] = await res.json();
+    const availablePolicies = difference(productNames, policiesAlreadyTaken);
+    if(availablePolicies.length > 0) {
+      availablePolicies.forEach(policy => {
+        mount(this.fieldset,
+          el('label', { for: policy }, 
+            this.checkboxes[policy],
+            el('span', productTitles[policy])),
+        );
+      });
+      mount(this.fieldset, this.submitButton);
+      mount(this, this.fieldset);
+    }
+    return availablePolicies;
   }
 
   private submitHandler(_selectedPolicies: ProductName[]) {}

@@ -1,4 +1,4 @@
-import { el, mount, setChildren } from 'redom';
+import { el, mount, RedomComponent, setChildren } from 'redom';
 
 import {
   productTitles,
@@ -8,7 +8,7 @@ import { easyAlert } from '../../utils';
 
 import PolicyManagementActions from './PolicyManagementActions';
 
-export default class PolicyViewer {
+export default class PolicyViewer implements RedomComponent {
   private thead = el('thead.kdi-thead', [
     'Sl. No.',
     'Policy Name',
@@ -17,7 +17,7 @@ export default class PolicyViewer {
   private tbody = el('tbody.kdi-tbody');
   private table = el('table.pure-table.pure-table-bordered', this.thead, this.tbody);
   el = el('div.table-container', this.table);
-  async init(username: string) {
+  async init(username: string): Promise<ProductName[]> {
     const res = await fetch(
       '/api/policies?'
       + new URLSearchParams({ username }).toString()
@@ -50,5 +50,6 @@ export default class PolicyViewer {
         el('td', managementActions)
       ]));
     });
+    return policies;
   }
 }

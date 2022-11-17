@@ -12,7 +12,8 @@ module.exports = {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        title: 'Insurance Management'
+        title: 'Insurance Management',
+        favicon: path.resolve(__dirname, 'src/frontend/public/assets/favicon.ico')
       }),
       new MiniCssExtractPlugin()
     ],
@@ -26,11 +27,6 @@ module.exports = {
             {
                 test: /\.scss$/i,
                 use: [ 'style-loader', 'css-loader', 'sass-loader' ]
-            },
-            {
-                test: /favicon\.ico$/i,
-                loader: 'file-loader',
-                options: { name: 'favicon.ico' }
             }
         ],
     },

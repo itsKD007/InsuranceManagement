@@ -1,5 +1,6 @@
 # Insurance Management System
-
+![GitHub repo size](https://img.shields.io/github/repo-size/itsKD007/InsuranceManagement?style=for-the-badge)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/itsKD007/InsuranceManagement?style=for-the-badge&color=%237b26d1)
 This is a web-based insurance management application developed as a software engineering project for the ESC-591 course.
 
 # Technical Details
